@@ -1,0 +1,261 @@
+@font-face {
+    font-family: 'Montserrat-Black';
+    src: url('./assets/Montserrat/static/Montserrat-Black.ttf') format('truetype');
+  }
+  @font-face {
+    font-family: 'Montserrat-Bold';
+    src: url('./assets/Montserrat/static/Montserrat-Bold.ttf') format('truetype');
+  }
+  @font-face {
+      font-family: 'Montserrat-Regular';
+      src: url('./assets/Montserrat/static/Montserrat-Regular.ttf') format('truetype');
+  }
+  @font-face {
+    font-family: 'Montserrat-Light';
+    src: url('./assets/Montserrat/static/Montserrat-Light.ttf') format('truetype');
+  }
+  @font-face {
+    font-family: 'Montserrat-Italic';
+    src: url('./assets/Montserrat/static/Montserrat-Italic.ttf') format('truetype');
+  }
+  
+  @font-face {
+    font-family: 'Montserrat-SemiBold';
+    src: url('./assets/Montserrat/static/Montserrat-SemiBold.ttf') format('truetype');
+  }
+
+  html, body {
+    max-width: 1920px;
+    max-height: 1080px;
+    height: 100%;
+  }
+
+  .errorText {
+    font-family: Montserrat-Light;
+    color: red;
+    margin-bottom: 5px;
+  }
+  
+  .root {
+    flex: 1;
+    max-width: 1920px;
+    max-height: 1080px;
+    width: 100vw;
+    height: 100vh;
+    margin: 0 auto;
+    text-align: center;
+    display: flex;
+    /* background: linear-gradient(45deg, #1E1E22, #071e92); */
+    background-color: black;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+
+  .Login {
+
+    width: 500px;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 50px;
+  }
+
+  .SignUp {
+    height: 525px;
+    width: 500px;
+    display: flex;
+    flex-direction: column;
+   
+
+
+  }
+
+  .LoginText {
+    font-family: Montserrat-Bold;
+    color: black;
+    font-size: 40px;
+    margin-bottom: 5px;
+  }
+
+  .subText {
+    font-family: Montserrat-Italic;
+    color: black;
+    font-size: 15px;
+    margin-top: 0px;;
+    margin-bottom: 15px;
+  }
+
+  .SignupText {
+    font-family: Montserrat-Bold;
+    color: black;
+    font-size: 40px;
+    margin-top: 0px;
+      text-decoration: none; 
+  }
+
+
+  .usernameInput {
+    font-family: Montserrat-Regular;
+    background-color: transparent;
+    border: 1px solid black;
+    height: 60px;
+    border-radius: 50px;
+    padding-left: 20px;
+    margin-bottom: 15px;
+    color: black;
+    font-size: 15px;
+  }
+
+  .usernameInput:focus {
+    outline: none;
+}
+
+  .passwordInput {
+    font-family: Montserrat-Regular;
+    background-color: transparent;
+    border-color: white;
+    height: 60px;
+    border-radius: 50px;
+    padding-left: 20px;
+    margin-bottom: 15px;
+    color: white;
+    font-size: 15px;;
+
+  }
+
+  .passwordInput:focus {
+    outline: none;
+}
+
+.emailSU {
+    font-family: Montserrat-Regular;
+    background-color: transparent;
+    border-color: white;
+    height: 60px;
+    border-radius: 50px;
+    padding-left: 20px;
+    margin-bottom: 20px;
+    color: white;
+    font-size: 15px;;
+    outline: none;
+  }
+
+  .emailSU:focus {
+    outline: none;
+}
+
+  .usernameSU {
+    font-family: Montserrat-Regular;
+    background-color: transparent;
+    border-color: white;
+    height: 60px;
+    border-radius: 50px;
+    padding-left: 20px;
+    margin-bottom: 20px;
+    color: white;
+    font-size: 15px;;
+  }
+
+  .usernameSU:focus {
+    outline: none;
+}
+
+  .passwordSU {
+    font-family: Montserrat-Regular;
+    background-color: transparent;
+    border-color: white;
+    height: 60px;
+    border-radius: 50px;
+    padding-left: 20px;
+    margin-bottom: 20px;
+    color: white;
+    font-size: 15px;;
+  }
+
+  .passwordSU:focus {
+    outline: none;
+}
+
+  .confirmSU {
+    font-family: Montserrat-Regular;
+    background-color: transparent;
+    border-color: white;
+    height: 60px;
+    border-radius: 50px;
+    padding-left: 20px;
+    margin-bottom: 20px;
+    color: white;
+    font-size: 15px;;
+  }
+
+  .confirmSU:focus {
+    outline: none;
+}
+
+
+  .loginButton {
+    font-family: Montserrat-Regular;
+    background: linear-gradient(120deg, #1E1E22, #5371FF);
+    color: white;
+    outline: none;
+    border: none;
+    height: 60px;
+    border-radius: 50px;
+    padding-left: 20px;
+    margin-bottom: 10px;
+  }
+
+  .loginButton:focus {
+    outline: none;
+}
+
+.loginButton:active {
+    opacity: 0.7;
+    transition :  0.2s 
+  }
+
+  .logo {
+    height: 100px;
+    width: 120px;
+    margin: 0 auto;
+    margin-top: 0px;
+    
+  }
+
+  .signup {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+  }
+
+  .accountText {
+    color: black;
+    font-family: Montserrat-Regular;
+  }
+
+  .signUpText {
+    font-family: Montserrat-Bold;
+    text-decoration: none;
+  }
+
+  .guestText {
+    position: absolute;
+    top: 20px;
+    right: 45px;
+    font-family: Montserrat-SemiBold;
+    color: black;
+    font-size: 15px;
+  }
+
+  .arrow {
+    position: absolute;
+    color: black;
+    width: 20px;
+    height: 20px;
+    top: 17px;
+    right: 20px;
+  }
+
+

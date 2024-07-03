@@ -1,0 +1,64 @@
+
+@font-face {
+    font-family: 'Montserrat-Black';
+    src: url('../assets/Montserrat/static/Montserrat-Black.ttf') format('truetype');
+  }
+  @font-face {
+    font-family: 'Montserrat-Bold';
+    src: url('./assets/Montserrat/static/Montserrat-Bold.ttf') format('truetype');
+  }
+  @font-face {
+      font-family: 'Montserrat-Regular';
+      src: url('./assets/Montserrat/static/Montserrat-Regular.ttf') format('truetype');
+  }
+  @font-face {
+    font-family: 'Montserrat-Light';
+    src: url('./assets/Montserrat/static/Montserrat-Light.ttf') format('truetype');
+  }
+  @font-face {
+    font-family: 'Montserrat-Italic';
+    src: url('./assets/Montserrat/static/Montserrat-Italic.ttf') format('truetype');
+  }
+  
+  @font-face {
+    font-family: 'Montserrat-SemiBold';
+    src: url('./assets/Montserrat/static/Montserrat-SemiBold.ttf') format('truetype');
+  }
+
+.loading-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+  }
+  
+  .spinner {
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid #3498db;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    animation: spin 1s linear infinite;
+  }
+  
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+  
+  .loading-screen p {
+    margin-top: 20px;
+    color: white;
+    font-size: 18px;
+  }
+
+  .loading-text {
+    font-family: Montserrat-ExtraLight;
+  }
