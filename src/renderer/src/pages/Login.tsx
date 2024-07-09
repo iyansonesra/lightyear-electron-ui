@@ -14,7 +14,10 @@ interface User {
   PIN: string;
 }
 
-export const Login: React.FC<{ setIsAuthorized: (value: boolean) => void }> = ({ setIsAuthorized }) => {
+export const Login: React.FC<{ 
+  setIsAuthorized: (value: boolean) => void,
+  setIsGuestUser: (value: boolean) => void
+}> = ({ setIsAuthorized, setIsGuestUser }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const { setUserInfo } = useUser();
@@ -50,10 +53,18 @@ export const Login: React.FC<{ setIsAuthorized: (value: boolean) => void }> = ({
     }
   };
 
+  const handleGuestLogin = () => {
+    setIsGuestUser(true);
+    setIsAuthorized(true);
+    setUserInfo('Guest', 'User');
+  };
+
   return (
     <div className='root'>
-      <h1 className='guestText'>Continue as Guest</h1>
-      <IoIosArrowForward className='arrow' />
+      <div className='guestLogin' onClick={handleGuestLogin}>
+        <h1 className='guestText'>Continue as Guest</h1>
+        <IoIosArrowForward className='arrow' />
+      </div>
       <div className='Login'>
         <img src={logo} className='logo' alt='Logo' />
         <h1 className='LoginText'>MEMBER LOGIN</h1>

@@ -66,6 +66,224 @@ body {
     justify-content: center;
 }
 
+.configure-button {
+    margin-top: 20px;
+
+
+    width: 150px;
+    height: 45px;
+    font-family: 'Montserrat-Light';
+    font-size: 18px;
+    background-color: transparent;
+
+
+    border: 1px solid black;
+}
+
+.config-screen {
+    position: fixed;
+    bottom: -100%;
+    left: 0;
+    width: 90%;
+    height: 95%;
+    border-top-left-radius: 50px;
+    border-top-right-radius: 50px;
+    background-color: white;
+    transition: bottom 0.3s ease-out;
+    z-index: 1000;
+    padding: 20px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-left: 5%;
+}
+
+.workout-config {
+    width: 80%;
+    height: 375px;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  }
+  
+  .standard.SetsAndReps {
+    flex: 2;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 70px;
+  }
+  .standard.sets,
+  .standard.reps {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    
+    
+  }
+  
+  .incrementor {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 5px;
+      gap: 20px;
+  }
+  
+  .incrementor button {
+      width: 100px;
+      height: 60px;
+      font-size: 20px;
+      border-radius: 10px;
+      background-color: #2d2d2d;
+      border: 1px solid #ccc;
+      color: white;
+      cursor: pointer;
+  }
+  
+  .incrementor span {
+      margin: 0 10px;
+      font-size: 35px;
+      min-width: 20px;
+      font-family: Montserrat-Bold;
+      text-align: center;
+  }
+  
+  /* Add more specific styles for each workout type if needed */
+  .workout-config.standard {
+    display: flex;
+    flex-direction: column;
+  }
+
+ .standard.weight {
+    flex: 1;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .standard.pounds-text {
+    font-family: Montserrat-Regular;
+    font-size: 20px;
+    width: 110px;
+  }
+
+  .standard.weight-text {
+    font-family: Montserrat-Regular;
+    font-size: 20px;
+  }
+
+  .standard.sets {
+    flex: 1;
+  
+  }
+
+  .standard.reps {
+    flex: 1;
+
+  }
+  
+  .workout-config.loading-eccentric {
+    /* Styles specific to loading eccentric workout */
+  }
+  
+  .workout-config.dropset {
+    /* Styles specific to dropset workout */
+  }
+
+.config-close-button {
+    margin-top: 10px;
+    padding: 20px 60px;
+    background-color: #000;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-family: Montserrat-Regular;
+}
+
+.workout-type-selector {
+    display: flex;
+    justify-content: space-around;
+    background-color: #f0f0f0;
+    border-radius: 25px;
+    padding: 5px;
+    position: relative;
+    margin: 20px auto;
+    width: 70%;
+    height: 50px;
+}
+
+.workout-type-selector .option {
+    flex: 1;
+    display: flex;
+   justify-content: center;
+   align-items: center;
+  
+    cursor: pointer;
+    z-index: 1;
+    transition: color 0.3s ease;
+    font-family: Montserrat-Regular;
+}
+
+.workout-type-selector .option.selected {
+    color: white;
+}
+
+.workout-type-selector .selector {
+    position: absolute;
+    background-color: #000;
+    width: calc(33.33% - 10px);
+    height: calc(100% - 10px);
+    border-radius: 20px;
+    top: 5px;
+    left: 5px;
+    transition: transform 0.3s ease;
+}
+
+.workout-type-selector .option:nth-child(2).selected ~ .selector {
+    transform: translateX(102%);
+}
+
+.workout-type-selector .option:nth-child(3).selected ~ .selector {
+    transform: translateX(207%);
+}
+
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+    z-index: 999;
+    filter: blur(80px);
+  -webkit-filter: blur(80px);
+}
+
+.overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.config-screen {
+    /* ... existing styles ... */
+    z-index: 1000;
+}
+
+.config-screen.open {
+    bottom: 0;
+}
+
 
 .root {
     flex: 1;
@@ -375,8 +593,32 @@ body {
     border-image: linear-gradient(#000, #fff) 20;
     border-width: 1px;
     border-style: solid;
-
 }
+
+.horizontal-weight-slider {
+    width: 600px;
+    height: 50%;
+    margin-top: 10px;
+    background-color: transparent;
+    border: 1px solid black;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    cursor: pointer;
+    position: relative;
+    border-image: linear-gradient(to left, #000, #fff) 20;
+    border-width: 1px;
+    border-style: solid;
+}
+
+.horizontal-gradient-fill {
+    background: -webkit-linear-gradient(180deg, #000, #fff);
+    height: 100%;
+    position: absolute;
+    left: 0;
+    transition: width 0.05s linear;
+}
+
 
 .circle {
     transition: stroke-dashoffset 1s ease-in-out;

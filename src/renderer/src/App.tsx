@@ -8,6 +8,7 @@ import { UserProvider } from '../src/pages/UserContext';
 
 function AppContent(): JSX.Element {
   const [isAuthorized, setIsAuthorized] = useState(false);
+  const [isGuestUser, setIsGuestUser] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const location = useLocation();
 
@@ -33,16 +34,16 @@ function AppContent(): JSX.Element {
         <Route 
           path="/" 
           element={
-            isAuthorized 
+            (isAuthorized || isGuestUser)
               ? <Navigate to="/workout" replace /> 
-              : <Login setIsAuthorized={setIsAuthorized} />
+              : <Login setIsAuthorized={setIsAuthorized} setIsGuestUser={setIsGuestUser}/>
           } 
         />
         <Route 
           path="/workout" 
           element={
-            isAuthorized 
-              ? <WorkoutScreen setIsAuthorized={setIsAuthorized} /> 
+            (isAuthorized || isGuestUser)
+              ? <WorkoutScreen setIsAuthorized={setIsAuthorized} setIsGuestUser={setIsGuestUser} /> 
               : <Navigate to="/" replace />
           } 
         />
