@@ -67,17 +67,15 @@ body {
 }
 
 .configure-button {
-    margin-top: 20px;
+    margin-top: 50px;
+    border: .5px solid black;
 
-
-    width: 150px;
-    height: 45px;
+    width: 175px;
+    height: 60px;
     font-family: 'Montserrat-Light';
     font-size: 18px;
     background-color: transparent;
-
-
-    border: 1px solid black;
+    border-radius: 10px;
 }
 
 .config-screen {
@@ -85,13 +83,13 @@ body {
     bottom: -100%;
     left: 0;
     width: 90%;
-    height: 95%;
+    height: 85%;
     border-top-left-radius: 50px;
     border-top-right-radius: 50px;
     background-color: white;
     transition: bottom 0.3s ease-out;
     z-index: 1000;
-    padding: 20px;
+
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
@@ -101,31 +99,13 @@ body {
 
 .workout-config {
     width: 80%;
-    height: 375px;
+    height: 500px;
     padding: 20px;
-    background-color: #f9f9f9;
     border-radius: 10px;
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
   }
   
-  .standard.SetsAndReps {
-    flex: 2;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 70px;
-  }
-  .standard.sets,
-  .standard.reps {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-    
-    
-  }
+
   
   .incrementor {
       display: flex;
@@ -136,12 +116,12 @@ body {
   }
   
   .incrementor button {
-      width: 100px;
-      height: 60px;
+      width: 90px;
+      height: 70px;
       font-size: 20px;
       border-radius: 10px;
-      background-color: #2d2d2d;
-      border: 1px solid #ccc;
+      background-color: #303030;
+      border: 2px solid #000;
       color: white;
       cursor: pointer;
   }
@@ -160,6 +140,13 @@ body {
     flex-direction: column;
   }
 
+  .workout-config.loading-eccentric {
+    /* Styles specific to loading eccentric workout */
+    display: flex;
+    flex-direction: column;
+
+  }
+
  .standard.weight {
     flex: 1;
     display: flex;
@@ -170,13 +157,13 @@ body {
 
   .standard.pounds-text {
     font-family: Montserrat-Regular;
-    font-size: 20px;
-    width: 110px;
+    font-size: 40px;
+    width: 200px;
   }
 
   .standard.weight-text {
     font-family: Montserrat-Regular;
-    font-size: 20px;
+    font-size: 30px;
   }
 
   .standard.sets {
@@ -186,20 +173,216 @@ body {
 
   .standard.reps {
     flex: 1;
+  }
 
+  .standard.increment-button {
+    height: 50px;
+    width: 50px;
+    background-color: #000;
+  }
+
+  .standard.SetsAndReps {
+    flex: 2;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 30px;
+  }
+
+  .standard.sets,
+  .standard.reps {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+  }
+
+  .standard.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    height:600px;
+    width: 100%;
+  }
+
+
+
+
+
+
+  .loading-eccentric.conweight {
+    flex: 1;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .loading-eccentric.eccweight {
+    flex: 1;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .loading-eccentric.pounds-text {
+    font-family: Montserrat-Regular;
+    font-size: 40px;
+    width: 200px;
+  }
+
+  .loading-eccentric.weight-text {
+    font-family: Montserrat-Regular;
+    font-size: 25px;
+  }
+
+  .loading-eccentric.sets {
+    flex: 1;
+  
+  }
+
+  .loading-eccentric.reps {
+    flex: 1;
+  }
+
+  .loading-eccentric.increment-button {
+    height: 50px;
+    width: 50px;
+    background-color: #000;
+  }
+
+  .loading-eccentric.SetsAndReps {
+    flex: 2;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 30px;
   }
   
-  .workout-config.loading-eccentric {
-    /* Styles specific to loading eccentric workout */
+  .loading-eccentric.sets,
+  .loading-eccentric.reps {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+  }
+
+  .loading-eccentric.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    height:600px;
+    width: 100%;
+  }
+ 
+  
+
+  .dropset.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    height: 600px;
+    width: 100%;
   }
   
   .workout-config.dropset {
-    /* Styles specific to dropset workout */
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .dropset.beginweight,
+  .dropset.endweight {
+    flex: 1;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+  
+  .dropset.pounds-text {
+    font-family: Montserrat-Regular;
+    font-size: 40px;
+    width: 200px;
+  }
+  
+  .dropset.weight-text {
+    font-family: Montserrat-Regular;
+    font-size: 25px;
+    width: 200px;
+  }
+  
+  .dropset.sets {
+    flex: 1;
+  }
+  
+  .dropset.reps {
+    flex: 1;
+  }
+  
+  .dropset.increment-button {
+    height: 50px;
+    width: 50px;
+    background-color: #000;
+  }
+  
+  .dropset.SetsAndReps {
+    flex: 2;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 30px;
+  }
+  
+  .dropset.sets,
+  .dropset.reps {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+  }
+  
+  .beginning-weight-slider,
+  .end-weight-slider {
+    width: 900px;
+    height: 50%;
+    margin-top: 10px;
+    background-color: transparent;
+    border: 1px solid black;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    cursor: pointer;
+    position: relative;
+    border-image: linear-gradient(to left, #000, #fff) 20;
+    border-width: 1px;
+    border-style: solid;
+  }
+  
+  .horizontal-gradient-fill {
+    background: -webkit-linear-gradient(180deg, #000, #fff);
+    height: 100%;
+    position: absolute;
+    left: 0;
+    transition: width 0.05s linear;
+    will-change: width;
   }
 
 .config-close-button {
-    margin-top: 10px;
-    padding: 20px 60px;
+ 
+    padding: 30px 70px;
     background-color: #000;
     color: white;
     border: none;
@@ -212,12 +395,13 @@ body {
     display: flex;
     justify-content: space-around;
     background-color: #f0f0f0;
+    font-size: 20px;
     border-radius: 25px;
     padding: 5px;
     position: relative;
     margin: 20px auto;
     width: 70%;
-    height: 50px;
+    height: 75px;
 }
 
 .workout-type-selector .option {
@@ -281,9 +465,9 @@ body {
 }
 
 .config-screen.open {
-    bottom: 0;
+    bottom: 0
+    ;
 }
-
 
 .root {
     flex: 1;
@@ -293,18 +477,33 @@ body {
     height: 100vh;
     margin: 0 auto;
     display: flex;
-    background-image: url('../assets/background.jpg');
-    background-size: 110%;
+    background-image: url('../assets/hex-background.png');
+    background-size: 250% 250%;
+    background-position: center;
     border: none;
     outline: none;
     flex-direction: column;
+    overflow: hidden;
+    position: relative;
+}
+
+.root::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: inherit;
+    transform: scale(1.1);
+    z-index: -1;
 }
 
 .menu-bar {
     position: fixed;
     top: 1px;
-    left: -320px;
-    width: 300px;
+    left: -420px;
+    width: 400px;
     height: 100%;
     background-color: white;
     transition: left 0.3s ease-in-out;
@@ -327,13 +526,13 @@ body {
     display: flex;
     flex-direction: row;
     cursor: pointer;
-    gap: 20px;
+    gap: 15px;
 }
 
 .logout-text {
     font-family: Montserrat-ExtraLight;
     color: rgb(224, 50, 50);
-    font-size: 20px;
+    font-size: 27px;
 }
 
 .logout-icon {
@@ -345,14 +544,14 @@ body {
     flex-direction: row;
     align-items: center;
     font-family: Montserrat-ExtraLight;
-    font-size: 10px;
+    font-size: 15px;
     margin-left: 15px;
     margin-top: 15px;
-    gap: 15px;
+    gap: 20px;
 }
 
 .user-icon {
-    border: 2px solid black;
+    border: 3px solid black;
     border-radius: 50px;
 }
   
@@ -385,8 +584,9 @@ body {
 
 .header-text {
     font-family: Montserrat-Regular;
-    font-size: 45px;
+    font-size: 60px;
     margin-top: 20px;
+    /* margin-left: 100px; */
 }
 
 .right-header {
@@ -405,15 +605,16 @@ body {
 .time {
     position: absolute;
     top: 19px;
-    right: 65px;
+    right: 25px;
     font-family: Montserrat-Regular;
-    font-size: 20px;
+    font-size: 30px;
+    width: 200px;
 }
 
 .settings-icon {
     position: absolute;
     right: 20px;
-    top: 15px;
+    top: 20px;
 
 }
 
@@ -449,11 +650,11 @@ body {
 
 .workout-text {
     font-family: Montserrat-Extralight;
-    font-size: 31px;
+    font-size: 40px;
 }
 
 .sets-circle-container {
-    height: 210px;
+    height: 300px;
     width: 50%;
     display: flex;
     align-items: center;
@@ -463,68 +664,99 @@ body {
 }
 
 .sets-text {
-    font-family: Montserrat-Light;
+    font-family: Montserrat-ExtraLight;
+    font-size: 50px;
+    margin-bottom: 10px;
 }
 
 .stats-circle-container {
-    height: 200px;
+    height: 250px;
     width: 100%;
     display: flex;
     flex-direction: row;
-    margin-top: 10px;
+    margin-top: 20px;
+ 
+}
+
+.set-rep-text {
+    display: flex;
+    position: absolute;
+    align-items: flex-end;
+    flex-direction: row;
+    top: 110px;
+    left: 90px;
+}
+
+.set-sets-text {
+    display: flex;
+    position: absolute;
+    align-items: flex-end;
+    flex-direction: row;
+    top: 110px;
+    left: 90px;
 }
 
 .setNumber {
     font-family: Montserrat-Bold;
-    font-size: 70px;
-    position: absolute;
-    top: 83px;
-    left: 70px;
+    font-size: 90px;
+    width: 50px;
   
-    margin-bottom: 5px;;
+    margin-bottom: 5px;
+   
   }
   
   .setNumberSmaller {
-    font-family: Montserrat-Bold;
-    font-size: 20px;
-    position: absolute;
-    top: 50px;
-    left: 27px;
-  
+    font-family: Montserrat-Light;
+    font-size: 35px;
+    position: relative;
+    left: 7px;
     margin-bottom: 5px;;
   }
 
 .reps-circle-container {
-    height: 210px;
+    height: 300px;
     width: 50%;
     display: flex;
     align-items: center;
     justify-content: space-around;
     flex-direction: column;
     position: relative;
+    /* background-color: green; */
 }
 
 .skeuContainer {
     display: flex;
     justify-content: center;
-    align-items: center;
-    height: 100vh;
+    height: "80%";
+   
+    width: 100px;
+    /* background-color: aqua; */
+    position: relative;
+    left: 10px;
+    bottom: 0;
+ 
+  
+
+    
 }
 
 .line {
-    width: 2px;
-    height: 200px;
-    background-color: black;
+    width: 40px;
+    height: 750px;
+    background-color: transparent;
+    border-radius: 20px;
+    border: 1px solid black;
     position: relative;
+    /* background: -webkit-linear-gradient(270deg, #000, #fff); */
 }
 
 .ball {
-    width: 20px;
-    height: 20px;
-    background-color: red;
+    width: 40px;
+    height: 40px;
+    background: -webkit-linear-gradient(45deg, #000, #fff);
     border-radius: 50%;
     position: absolute;
-    left: px; /* Center the ball horizontally relative to the line */
+    top: 710px; /* Center the ball horizontally relative to the line */
 }
 
 .increment-button {
@@ -540,30 +772,35 @@ body {
 
 .reps-text {
     font-family: Montserrat-Light;
+    font-size: 50px;
+    margin-bottom: 10px;
 }
 
 
 .model {
-    flex: 1;
+    flex: 1.3;
     display: flex;
     align-items: center;
-    justify-content: center;
+    /* justify-content: center; */
+    /* background-color: green; */
+    position: relative;
 
 }
 
 .sliders {
     flex: 1;
-
+    /* background-color: pink; */
     display: flex;
-    gap: 50px;
+    gap: 80px;
     height: 95%;
+    position: relative;
 
 }
 
 .weight-slider-container {
     height: "100%";
-    margin-left: 30px;
-    width: 125px;
+    margin-left: 80px;
+    width: 150px;
     display: flex;
     align-items: center;
     flex-direction: column;
@@ -572,17 +809,49 @@ body {
 .height-slider-container {
     height: "100%";
 
-    width: 125px;
+    width: 150px;
     display: flex;
     align-items: center;
     flex-direction: column;
 
 }
 
-.weight-slider {
-    width: 40%;
-    height: 500px;
+.eccentric-weight-slider {
+    width: 900px;
+    height: 50%;
     margin-top: 10px;
+    background-color: transparent;
+    border: 1px solid black;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    cursor: pointer;
+    position: relative;
+    border-image: linear-gradient(to left, #000, #fff) 20;
+    border-width: 1px;
+    border-style: solid;
+}
+
+.concentric-weight-slider {
+    width: 900px;
+    height: 50%;
+    margin-top: 10px;
+    background-color: transparent;
+    border: 1px solid black;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    cursor: pointer;
+    position: relative;
+    border-image: linear-gradient(to left, #000, #fff) 20;
+    border-width: 1px;
+    border-style: solid;
+}
+
+.weight-slider {
+    width: 50%;
+    height: 740px;
+    margin-top: 30px;
     background-color: transparent;
     border: 1px solid black;
     display: flex;
@@ -596,7 +865,7 @@ body {
 }
 
 .horizontal-weight-slider {
-    width: 600px;
+    width: 900px;
     height: 50%;
     margin-top: 10px;
     background-color: transparent;
@@ -616,7 +885,8 @@ body {
     height: 100%;
     position: absolute;
     left: 0;
-    transition: width 0.05s linear;
+    transition: height 0.05s linear;
+    will-change: width;
 }
 
 
@@ -625,9 +895,9 @@ body {
   }
 
 .inches-slider {
-    width: 40%;
-    height: 500px;
-    margin-top: 10px;
+    width: 50%;
+    height: 740px;
+    margin-top: 30px;
     background-color: transparent;
     border: 1px solid black;
     display: flex;
@@ -675,6 +945,7 @@ body {
 .pounds-text {
     font-family: Montserrat-Regular;
     font-size: 28px;
+    
     ;
 
 }
@@ -687,18 +958,18 @@ body {
 }
 
 .full-machine {
-    height: 460px;
-    margin-top: 50px;
-    margin-left: 10px;
+    height: 700px;
+    margin-top: 100px;
+    margin-left: 130px;
     position: absolute;
 }
 
 
 .bottom-machine {
-    height: 180px;
-    margin-top: 380px;
+    height: 280px;
+    margin-top: 600px;
     position: absolute;
-    margin-left: 10px;
+    margin-left: 107px;
 
 
 }

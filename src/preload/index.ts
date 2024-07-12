@@ -1,12 +1,9 @@
 import { contextBridge } from 'electron'
 import { electronAPI } from '@electron-toolkit/preload'
-import { SerialPort, ReadlineParser  } from 'serialport';
-
-
+import { SerialPort, ReadlineParser } from 'serialport';
 
 // Custom APIs for renderer
 const api = {}
-
 
 console.log('resetting port');
 
@@ -19,6 +16,7 @@ if (process.contextIsolated) {
     contextBridge.exposeInMainWorld('api', api)
     
     const openPorts = {};
+    const angleListeners = {};
 
     contextBridge.exposeInMainWorld('serialport', {
       list: () => {
@@ -54,6 +52,12 @@ if (process.contextIsolated) {
     
           parser.on('data', (line) => {
             console.log(line);
+            if (angleListeners[path]) {
+              const angle = parseFloat(line);
+              if (!isNaN(angle)) {
+                angleListeners[path](angle);
+              }
+            }
           });
     
           port.open((error) => {
@@ -83,6 +87,14 @@ if (process.contextIsolated) {
             }
           });
         });
+      },
+
+      listenForAngle: (path: string, callback: (angle: number) => void) => {
+        angleListeners[path] = callback;
+      },
+
+      stopListeningForAngle: (path: string) => {
+        delete angleListeners[path];
       }
     });
     

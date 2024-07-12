@@ -5,17 +5,12 @@ import { Login } from '../src/pages/Login';
 import LoadingScreen from '../src/pages/LoadingScreen';
 import { UserProvider } from '../src/pages/UserContext';
 
-
 function AppContent(): JSX.Element {
   const [isAuthorized, setIsAuthorized] = useState(false);
   const [isGuestUser, setIsGuestUser] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const location = useLocation();
 
-
-  window.serialport.list().then(ports => {
-    console.log('Available ports:', ports);
-  });
 
   useEffect(() => {
     setIsLoading(true);
