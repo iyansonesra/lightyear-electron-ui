@@ -48,8 +48,9 @@ body {
     overflow: hidden;
     user-select: none;
 }
+
 .close-icon {
-   margin-right: 1px;
+    margin-right: 1px;
 }
 
 .close-circle {
@@ -102,191 +103,104 @@ body {
     height: 500px;
     padding: 20px;
     border-radius: 10px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-  }
-  
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
 
-  
-  .incrementor {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-top: 5px;
-      gap: 20px;
-  }
-  
-  .incrementor button {
-      width: 90px;
-      height: 70px;
-      font-size: 20px;
-      border-radius: 10px;
-      background-color: #303030;
-      border: 2px solid #000;
-      color: white;
-      cursor: pointer;
-  }
-  
-  .incrementor span {
-      margin: 0 10px;
-      font-size: 35px;
-      min-width: 20px;
-      font-family: Montserrat-Bold;
-      text-align: center;
-  }
-  
-  /* Add more specific styles for each workout type if needed */
-  .workout-config.standard {
+
+
+.incrementor {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 5px;
+    gap: 20px;
+}
+
+.incrementor button {
+    width: 90px;
+    height: 70px;
+    font-size: 20px;
+    border-radius: 10px;
+    background-color: #303030;
+    border: 2px solid #000;
+    color: white;
+    cursor: pointer;
+}
+
+.incrementor span {
+    margin: 0 10px;
+    font-size: 35px;
+    min-width: 20px;
+    font-family: Montserrat-Bold;
+    text-align: center;
+}
+
+/* Add more specific styles for each workout type if needed */
+.workout-config.standard {
     display: flex;
     flex-direction: column;
-  }
+}
 
-  .workout-config.loading-eccentric {
+.workout-config.loading-eccentric {
     /* Styles specific to loading eccentric workout */
     display: flex;
     flex-direction: column;
 
-  }
+}
 
- .standard.weight {
+.standard.weight {
     flex: 1;
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
-  }
+}
 
-  .standard.pounds-text {
+.standard.pounds-text {
     font-family: Montserrat-Regular;
     font-size: 40px;
     width: 200px;
-  }
+}
 
-  .standard.weight-text {
+.standard.weight-text {
     font-family: Montserrat-Regular;
     font-size: 30px;
-  }
+}
 
-  .standard.sets {
+.standard.sets {
     flex: 1;
-  
-  }
 
-  .standard.reps {
+}
+
+.standard.reps {
     flex: 1;
-  }
+}
 
-  .standard.increment-button {
+.standard.increment-button {
     height: 50px;
     width: 50px;
     background-color: #000;
-  }
+}
 
-  .standard.SetsAndReps {
+.standard.SetsAndReps {
     flex: 2;
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
     margin-bottom: 30px;
-  }
+}
 
-  .standard.sets,
-  .standard.reps {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-  }
-
-  .standard.container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-between;
-    gap: 20px;
-    height:600px;
-    width: 100%;
-  }
-
-
-
-
-
-
-  .loading-eccentric.conweight {
-    flex: 1;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-  }
-
-  .loading-eccentric.eccweight {
-    flex: 1;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-  }
-
-  .loading-eccentric.pounds-text {
-    font-family: Montserrat-Regular;
-    font-size: 40px;
-    width: 200px;
-  }
-
-  .loading-eccentric.weight-text {
-    font-family: Montserrat-Regular;
-    font-size: 25px;
-  }
-
-  .loading-eccentric.sets {
-    flex: 1;
-  
-  }
-
-  .loading-eccentric.reps {
-    flex: 1;
-  }
-
-  .loading-eccentric.increment-button {
-    height: 50px;
-    width: 50px;
-    background-color: #000;
-  }
-
-  .loading-eccentric.SetsAndReps {
-    flex: 2;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 30px;
-  }
-  
-  .loading-eccentric.sets,
-  .loading-eccentric.reps {
+.standard.sets,
+.standard.reps {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     gap: 10px;
-  }
+}
 
-  .loading-eccentric.container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-between;
-    gap: 20px;
-    height:600px;
-    width: 100%;
-  }
- 
-  
-
-  .dropset.container {
+.standard.container {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -294,68 +208,155 @@ body {
     gap: 20px;
     height: 600px;
     width: 100%;
-  }
-  
-  .workout-config.dropset {
-    display: flex;
-    flex-direction: column;
-  }
-  
-  .dropset.beginweight,
-  .dropset.endweight {
+}
+
+
+
+
+
+
+.loading-eccentric.conweight {
     flex: 1;
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
-  }
-  
-  .dropset.pounds-text {
+}
+
+.loading-eccentric.eccweight {
+    flex: 1;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.loading-eccentric.pounds-text {
     font-family: Montserrat-Regular;
     font-size: 40px;
     width: 200px;
-  }
-  
-  .dropset.weight-text {
+}
+
+.loading-eccentric.weight-text {
     font-family: Montserrat-Regular;
     font-size: 25px;
-    width: 200px;
-  }
-  
-  .dropset.sets {
+}
+
+.loading-eccentric.sets {
     flex: 1;
-  }
-  
-  .dropset.reps {
+
+}
+
+.loading-eccentric.reps {
     flex: 1;
-  }
-  
-  .dropset.increment-button {
+}
+
+.loading-eccentric.increment-button {
     height: 50px;
     width: 50px;
     background-color: #000;
-  }
-  
-  .dropset.SetsAndReps {
+}
+
+.loading-eccentric.SetsAndReps {
     flex: 2;
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
     margin-bottom: 30px;
-  }
-  
-  .dropset.sets,
-  .dropset.reps {
+}
+
+.loading-eccentric.sets,
+.loading-eccentric.reps {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     gap: 10px;
-  }
-  
-  .beginning-weight-slider,
-  .end-weight-slider {
+}
+
+.loading-eccentric.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    height: 600px;
+    width: 100%;
+}
+
+
+
+.dropset.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    height: 600px;
+    width: 100%;
+}
+
+.workout-config.dropset {
+    display: flex;
+    flex-direction: column;
+}
+
+.dropset.beginweight,
+.dropset.endweight {
+    flex: 1;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.dropset.pounds-text {
+    font-family: Montserrat-Regular;
+    font-size: 40px;
+    width: 200px;
+}
+
+.dropset.weight-text {
+    font-family: Montserrat-Regular;
+    font-size: 25px;
+    width: 200px;
+}
+
+.dropset.sets {
+    flex: 1;
+}
+
+.dropset.reps {
+    flex: 1;
+}
+
+.dropset.increment-button {
+    height: 50px;
+    width: 50px;
+    background-color: #000;
+}
+
+.dropset.SetsAndReps {
+    flex: 2;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 30px;
+}
+
+.dropset.sets,
+.dropset.reps {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.beginning-weight-slider,
+.end-weight-slider {
     width: 900px;
     height: 50%;
     margin-top: 10px;
@@ -369,19 +370,19 @@ body {
     border-image: linear-gradient(to left, #000, #fff) 20;
     border-width: 1px;
     border-style: solid;
-  }
-  
-  .horizontal-gradient-fill {
+}
+
+.horizontal-gradient-fill {
     background: -webkit-linear-gradient(180deg, #000, #fff);
     height: 100%;
     position: absolute;
     left: 0;
     transition: width 0.05s linear;
     will-change: width;
-  }
+}
 
 .config-close-button {
- 
+
     padding: 30px 70px;
     background-color: #000;
     color: white;
@@ -407,9 +408,9 @@ body {
 .workout-type-selector .option {
     flex: 1;
     display: flex;
-   justify-content: center;
-   align-items: center;
-  
+    justify-content: center;
+    align-items: center;
+
     cursor: pointer;
     z-index: 1;
     transition: color 0.3s ease;
@@ -431,11 +432,11 @@ body {
     transition: transform 0.3s ease;
 }
 
-.workout-type-selector .option:nth-child(2).selected ~ .selector {
+.workout-type-selector .option:nth-child(2).selected~.selector {
     transform: translateX(102%);
 }
 
-.workout-type-selector .option:nth-child(3).selected ~ .selector {
+.workout-type-selector .option:nth-child(3).selected~.selector {
     transform: translateX(207%);
 }
 
@@ -451,7 +452,7 @@ body {
     transition: opacity 0.3s ease, visibility 0.3s ease;
     z-index: 999;
     filter: blur(80px);
-  -webkit-filter: blur(80px);
+    -webkit-filter: blur(80px);
 }
 
 .overlay.active {
@@ -465,8 +466,7 @@ body {
 }
 
 .config-screen.open {
-    bottom: 0
-    ;
+    bottom: 0;
 }
 
 .root {
@@ -538,7 +538,7 @@ body {
 .logout-icon {
     color: red;
 }
-  
+
 .user-info {
     display: flex;
     flex-direction: row;
@@ -554,22 +554,26 @@ body {
     border: 3px solid black;
     border-radius: 50px;
 }
-  
+
 
 @-webkit-keyframes slide {
-    100% { left: 0; }
+    100% {
+        left: 0;
+    }
 }
 
 @keyframes slide {
-    100% { left: 0; }
+    100% {
+        left: 0;
+    }
 }
-  
-  .close-menu {
+
+.close-menu {
     position: absolute;
     top: 10px;
     right: 10px;
     /* Style your close button as needed */
-  }
+}
 
 .header {
     display: flex;
@@ -618,6 +622,22 @@ body {
 
 }
 
+
+.fade-in {
+    animation: fadeIn 0.5s;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+  
+
 .workout-container {
     display: flex;
     width: 100%;
@@ -631,13 +651,12 @@ body {
     justify-content: center;
     align-items: center;
     padding-bottom: 10px;
-    
+
 }
 
 .workout-rectangle {
     background-color: transparent;
     height: 90%;
-    width: 85%;
     padding: 10px;
     border-radius: 20px;
     ;
@@ -675,7 +694,7 @@ body {
     display: flex;
     flex-direction: row;
     margin-top: 20px;
- 
+
 }
 
 .set-rep-text {
@@ -700,18 +719,19 @@ body {
     font-family: Montserrat-Bold;
     font-size: 90px;
     width: 50px;
-  
+
     margin-bottom: 5px;
-   
-  }
-  
-  .setNumberSmaller {
+
+}
+
+.setNumberSmaller {
     font-family: Montserrat-Light;
     font-size: 35px;
     position: relative;
     left: 7px;
-    margin-bottom: 5px;;
-  }
+    margin-bottom: 5px;
+    ;
+}
 
 .reps-circle-container {
     height: 300px;
@@ -727,17 +747,10 @@ body {
 .skeuContainer {
     display: flex;
     justify-content: center;
-    height: "80%";
-   
     width: 100px;
-    /* background-color: aqua; */
+    margin-top: 100px;
+    margin-left: 150px;
     position: relative;
-    left: 10px;
-    bottom: 0;
- 
-  
-
-    
 }
 
 .line {
@@ -756,7 +769,8 @@ body {
     background: -webkit-linear-gradient(45deg, #000, #fff);
     border-radius: 50%;
     position: absolute;
-    top: 710px; /* Center the ball horizontally relative to the line */
+    top: 710px;
+    /* Center the ball horizontally relative to the line */
 }
 
 .increment-button {
@@ -776,22 +790,26 @@ body {
     margin-bottom: 10px;
 }
 
+.model-container {
+    flex: 1;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
 
 .model {
-    flex: 1.3;
     display: flex;
     align-items: center;
     /* justify-content: center; */
-    /* background-color: green; */
     position: relative;
 
 }
 
 .sliders {
     flex: 1;
-    /* background-color: pink; */
     display: flex;
-    gap: 80px;
+    gap: 40px;
     height: 95%;
     position: relative;
 
@@ -799,21 +817,54 @@ body {
 
 .weight-slider-container {
     height: "100%";
-    margin-left: 80px;
+    margin-left: 10px;
     width: 150px;
     display: flex;
     align-items: center;
     flex-direction: column;
 }
 
-.height-slider-container {
-    height: "100%";
+.horizontal-line {
+    width: 60px;
+    top: 407px;
+    left: 470px;
+    height: .5px;
+    background-color: black; /* Adjust color as needed */
+    position:absolute;
+  }
 
-    width: 150px;
+.height-slider-container {
+    height: 400px;
+    width: 90px;
+    top: 190px;
+    left: 1180px;
     display: flex;
     align-items: center;
     flex-direction: column;
+    position:absolute;
 
+}
+
+.height-slider-toggle {
+    position: absolute;
+    left: 535px;
+    text-align: left;
+    width: 150px;
+    top: 407px;
+    transform: translateY(-50%);
+    padding: 10px;
+    background-color: transparent;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    font-family: Montserrat-Regular;
+    font-size: 16px;
+    
+}
+
+.height-slider-toggle:hover {
+    background-color: transparent;
 }
 
 .eccentric-weight-slider {
@@ -892,12 +943,12 @@ body {
 
 .circle {
     transition: stroke-dashoffset 1s ease-in-out;
-  }
+}
 
 .inches-slider {
     width: 50%;
-    height: 740px;
-    margin-top: 30px;
+    height: 300px;
+    margin-top: 10px;
     background-color: transparent;
     border: 1px solid black;
     display: flex;
@@ -937,7 +988,7 @@ body {
 
 .height-text {
     font-family: Montserrat-ExtraLight;
-    font-size: 28px;
+    font-size: 20px;
     ;
 
 }
@@ -945,14 +996,14 @@ body {
 .pounds-text {
     font-family: Montserrat-Regular;
     font-size: 28px;
-    
+
     ;
 
 }
 
 .inches-text {
     font-family: Montserrat-Regular;
-    font-size: 28px;
+    font-size: 20px;
     ;
 
 }
@@ -960,8 +1011,8 @@ body {
 .full-machine {
     height: 700px;
     margin-top: 100px;
-    margin-left: 130px;
-    position: absolute;
+    margin-left: 21px;
+    position: relative;
 }
 
 
@@ -969,7 +1020,7 @@ body {
     height: 280px;
     margin-top: 600px;
     position: absolute;
-    margin-left: 107px;
+    margin-left: 0px;
 
 
 }
