@@ -78,7 +78,38 @@ body {
     border-radius: 10px;
 }
 
+.game-button {
+  margin-top: 50px;
+  border: .5px solid black;
+
+  width: 175px;
+  height: 60px;
+  font-family: 'Montserrat-Light';
+  font-size: 18px;
+  background-color: transparent;
+  border-radius: 10px;
+}
+
 .config-screen {
+    position: fixed;
+    bottom: -100%;
+    left: 0;
+    width: 90%;
+    height: 85%;
+    border-top-left-radius: 50px;
+    border-top-right-radius: 50px;
+    background-color: white;
+    transition: bottom 0.3s ease-out;
+    z-index: 1000;
+
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-left: 5%;
+}
+
+.game-screen {
     position: fixed;
     bottom: -100%;
     left: 0;
@@ -104,9 +135,9 @@ body {
     border-radius: 10px;
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
   }
-  
 
-  
+
+
   .incrementor {
       display: flex;
       align-items: center;
@@ -114,7 +145,7 @@ body {
       margin-top: 5px;
       gap: 20px;
   }
-  
+
   .incrementor button {
       width: 90px;
       height: 70px;
@@ -125,7 +156,7 @@ body {
       color: white;
       cursor: pointer;
   }
-  
+
   .incrementor span {
       margin: 0 10px;
       font-size: 35px;
@@ -133,7 +164,7 @@ body {
       font-family: Montserrat-Bold;
       text-align: center;
   }
-  
+
   /* Add more specific styles for each workout type if needed */
   .workout-config.standard {
     display: flex;
@@ -168,7 +199,7 @@ body {
 
   .standard.sets {
     flex: 1;
-  
+
   }
 
   .standard.reps {
@@ -243,7 +274,7 @@ body {
 
   .loading-eccentric.sets {
     flex: 1;
-  
+
   }
 
   .loading-eccentric.reps {
@@ -264,7 +295,7 @@ body {
     justify-content: space-between;
     margin-bottom: 30px;
   }
-  
+
   .loading-eccentric.sets,
   .loading-eccentric.reps {
     display: flex;
@@ -283,8 +314,8 @@ body {
     height:600px;
     width: 100%;
   }
- 
-  
+
+
 
   .dropset.container {
     display: flex;
@@ -295,12 +326,12 @@ body {
     height: 600px;
     width: 100%;
   }
-  
+
   .workout-config.dropset {
     display: flex;
     flex-direction: column;
   }
-  
+
   .dropset.beginweight,
   .dropset.endweight {
     flex: 1;
@@ -309,33 +340,33 @@ body {
     align-items: center;
     justify-content: space-between;
   }
-  
+
   .dropset.pounds-text {
     font-family: Montserrat-Regular;
     font-size: 40px;
     width: 200px;
   }
-  
+
   .dropset.weight-text {
     font-family: Montserrat-Regular;
     font-size: 25px;
     width: 200px;
   }
-  
+
   .dropset.sets {
     flex: 1;
   }
-  
+
   .dropset.reps {
     flex: 1;
   }
-  
+
   .dropset.increment-button {
     height: 50px;
     width: 50px;
     background-color: #000;
   }
-  
+
   .dropset.SetsAndReps {
     flex: 2;
     display: flex;
@@ -344,7 +375,7 @@ body {
     justify-content: space-between;
     margin-bottom: 30px;
   }
-  
+
   .dropset.sets,
   .dropset.reps {
     display: flex;
@@ -353,7 +384,7 @@ body {
     justify-content: center;
     gap: 10px;
   }
-  
+
   .beginning-weight-slider,
   .end-weight-slider {
     width: 900px;
@@ -370,7 +401,7 @@ body {
     border-width: 1px;
     border-style: solid;
   }
-  
+
   .horizontal-gradient-fill {
     background: -webkit-linear-gradient(180deg, #000, #fff);
     height: 100%;
@@ -381,7 +412,7 @@ body {
   }
 
 .config-close-button {
- 
+
     padding: 30px 70px;
     background-color: #000;
     color: white;
@@ -409,7 +440,7 @@ body {
     display: flex;
    justify-content: center;
    align-items: center;
-  
+
     cursor: pointer;
     z-index: 1;
     transition: color 0.3s ease;
@@ -538,7 +569,7 @@ body {
 .logout-icon {
     color: red;
 }
-  
+
 .user-info {
     display: flex;
     flex-direction: row;
@@ -554,7 +585,7 @@ body {
     border: 3px solid black;
     border-radius: 50px;
 }
-  
+
 
 @-webkit-keyframes slide {
     100% { left: 0; }
@@ -563,7 +594,7 @@ body {
 @keyframes slide {
     100% { left: 0; }
 }
-  
+
   .close-menu {
     position: absolute;
     top: 10px;
@@ -631,7 +662,7 @@ body {
     justify-content: center;
     align-items: center;
     padding-bottom: 10px;
-    
+
 }
 
 .workout-rectangle {
@@ -675,7 +706,7 @@ body {
     display: flex;
     flex-direction: row;
     margin-top: 20px;
- 
+
 }
 
 .set-rep-text {
@@ -700,11 +731,11 @@ body {
     font-family: Montserrat-Bold;
     font-size: 90px;
     width: 50px;
-  
+
     margin-bottom: 5px;
-   
+
   }
-  
+
   .setNumberSmaller {
     font-family: Montserrat-Light;
     font-size: 35px;
@@ -728,16 +759,16 @@ body {
     display: flex;
     justify-content: center;
     height: "80%";
-   
+
     width: 100px;
     /* background-color: aqua; */
     position: relative;
     left: 10px;
     bottom: 0;
- 
-  
 
-    
+
+
+
 }
 
 .line {
@@ -945,7 +976,7 @@ body {
 .pounds-text {
     font-family: Montserrat-Regular;
     font-size: 28px;
-    
+
     ;
 
 }
