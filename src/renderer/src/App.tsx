@@ -4,6 +4,7 @@ import { WorkoutScreen } from '../src/pages/WorkoutScreen';
 import { Login } from '../src/pages/Login';
 import LoadingScreen from '../src/pages/LoadingScreen';
 import { UserProvider } from '../src/pages/UserContext';
+import { ChestPress } from './pages/ChestPress';
 
 function AppContent(): JSX.Element {
   const [isAuthorized, setIsAuthorized] = useState(false);
@@ -38,7 +39,7 @@ function AppContent(): JSX.Element {
           path="/workout" 
           element={
             (isAuthorized || isGuestUser)
-              ? <WorkoutScreen setIsAuthorized={setIsAuthorized} setIsGuestUser={setIsGuestUser} /> 
+              ? <ChestPress setIsAuthorized={setIsAuthorized} setIsGuestUser={setIsGuestUser} /> 
               : <Navigate to="/" replace />
           } 
         />
