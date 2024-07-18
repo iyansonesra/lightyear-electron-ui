@@ -1,0 +1,102 @@
+@font-face {
+    font-family: 'Montserrat-Black';
+    src: url('../assets/Montserrat/static/Montserrat-Black.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Montserrat-Bold';
+    src: url('../assets/Montserrat/static/Montserrat-Bold.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Montserrat-Regular';
+    src: url('../assets/Montserrat/static/Montserrat-Regular.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Montserrat-Light';
+    src: url('../assets/Montserrat/static/Montserrat-Light.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Montserrat-Italic';
+    src: url('../assets/Montserrat/static/Montserrat-Italic.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Montserrat-SemiBold';
+    src: url('../assets/Montserrat/static/Montserrat-SemiBold.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Montserrat-ExtraLight';
+    src: url('../assets/Montserrat/static/Montserrat-ExtraLight.ttf') format('truetype');
+}
+
+.workout-summary {
+    background-color: black;
+    height: 100vh;
+    width: 100vw;
+    color: white;
+    font-family: Montserrat-Regular;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* justify-content: center; */
+
+}
+
+.header-text-summ {
+    font-size: 70px;
+    margin-top: 30px;
+    margin-bottom: 30px;;
+    font-family: Montserrat-Bold;
+}
+
+.listing {
+    display: flex;
+    flex-direction: row;
+    width: 80vw;
+    
+    justify-content: space-between;
+    margin-top: 30px;
+    font-size: 30px;
+}
+
+.divider {
+    width: 80vw;
+    height: 1px;
+    justify-self: center;
+    background-color: rgb(255, 255, 255, 0.5);
+    margin-top: 30px;
+}
+
+.light-text {
+    font-family: Montserrat-Light;
+    font-size: 40px;
+    margin-top: 10px;
+}
+
+.mid-text {
+    font-family: Montserrat-Regular;
+    font-size: 40px;
+    margin-top: 10px;
+}
+
+.back-button {
+    display: flex;
+    position: absolute;
+    bottom: 80px;
+
+    align-items: center;
+    justify-content: center;
+    height: 70px;
+    width: 300px;
+    background-color: transparent;
+    border: 3px solid rgba(255, 255, 255, 0.3);
+    border-radius: 20px;;
+    color: white;
+    font-size: 30px;
+    font-family: Montserrat-Light;
+
+}

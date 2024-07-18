@@ -733,6 +733,21 @@ body {
     ;
 }
 
+.dropset-button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 10px;
+  }
+  
+  .dropset-button:hover {
+    background-color: #45a049;
+  }
+
 .reps-circle-container {
     height: 300px;
     width: 50%;

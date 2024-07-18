@@ -12,6 +12,7 @@ import { LoadingEccentricConfig } from '../components/LoadingEccentricConfig'
 import { DropsetConfig } from '../components/DropsetConfig'
 import { StandardConfig } from '../components/StandardConfig'
 
+
 window.serialport
   .openPort('COM15', 57600)
   .then(() => {
@@ -22,6 +23,16 @@ window.serialport
   })
 
 export const WorkoutScreen = ({ setIsAuthorized, setIsGuestUser }) => {
+
+
+  const [startTime, setStartTime] = useState<number | null>(0);
+  const [totalTime, setTotalTime] = useState(0);
+  const [maxWeight, setMaxWeight] = useState(0);
+  const [totalWeight, setTotalWeight] = useState(0);
+  const [weightCount, setWeightCount] = useState(0);
+  const [totalCompletedReps, setTotalCompletedReps] = useState(0);
+  const [totalCompletedSets, setTotalCompletedSets] = useState(0);
+
   const CIRCLE_LENGTH1 = 500
   const R1 = CIRCLE_LENGTH1 / (2 * Math.PI)
   const CIRCLE_LENGTH2 = 550
@@ -35,6 +46,8 @@ export const WorkoutScreen = ({ setIsAuthorized, setIsGuestUser }) => {
   const [numReps, setNumReps] = useState(8)
   const [currentRep, setCurrentRep] = useState(0)
   const [currentSet, setCurrentSet] = useState(0)
+  const [isDropsetMode, setIsDropsetMode] = useState(false);
+  const [decrementFactor, setDecrementFactor] = useState(0);
   // const [beginningWeight, setBeginningWeight] = useState(50);
 
   // const [initialWeight, setInitialWeight] = useState(50);
@@ -52,6 +65,18 @@ export const WorkoutScreen = ({ setIsAuthorized, setIsGuestUser }) => {
 
   const [workoutType, setWorkoutType] = useState('Standard')
 
+  const [sliderState, setSliderState] = useState({
+    weight: 0,
+    sliderPosition: (50 / 300) * 300
+  })
+
+  const [heightState, setheightState] = useState({
+    height: 5,
+    heightPosition: (50 / 10) * 10
+  })
+
+
+
   useEffect(() => {
     window.serialport.listenForAngle('COM15', (newAngle) => {
       setAngle((prevAngle) => {
@@ -62,6 +87,15 @@ export const WorkoutScreen = ({ setIsAuthorized, setIsGuestUser }) => {
       })
     })
   }, [])
+
+  useEffect(() => {
+    if (currentSet === numSets && currentRep === numReps) {
+      setTimeout(() => {
+        handleCompleteWorkout();
+      }, 4000);
+    }
+  }, [currentSet, currentRep, numSets, numReps]);
+
   useEffect(() => {
     console.log(
       `Angle: ${angle}, Ascending: ${isAscending}, Upper Threshold Reached: ${hasReachedUpperThreshold}`
@@ -107,6 +141,29 @@ export const WorkoutScreen = ({ setIsAuthorized, setIsGuestUser }) => {
   }
 
   useEffect(() => {
+    if (startTime) {
+      const timer = setInterval(() => {
+        setTotalTime(Math.floor((Date.now() - startTime) / 1000));
+      }, 1000);
+      return () => clearInterval(timer);
+    }
+  }, [startTime]);
+
+  useEffect(() => {
+    if (currentSet === numSets && currentRep === numReps) {
+      handleCompleteWorkout();
+    }
+  }, [currentSet, currentRep, numSets, numReps]);
+
+  useEffect(() => {
+    if (sliderState.weight > maxWeight) {
+      setMaxWeight(sliderState.weight);
+    }
+    setTotalWeight(prevTotal => prevTotal + sliderState.weight);
+    setWeightCount(prevCount => prevCount + 1);
+  }, [sliderState.weight]);
+
+  useEffect(() => {
     if (workoutMode === 'LoadingEccentric') {
       if (isAscending && angle >= BOTTOM_THRESHOLD) {
         sendWeightData(concentricWeight)
@@ -141,6 +198,8 @@ export const WorkoutScreen = ({ setIsAuthorized, setIsGuestUser }) => {
       updateSlider(concentricWeight)
     }
 
+    setTotalCompletedReps(prev => prev + 1);
+
     if (currentRep < numReps) {
       setCurrentRep((prev) => prev + 1)
       if (currentRep === numReps - 1) {
@@ -159,10 +218,11 @@ export const WorkoutScreen = ({ setIsAuthorized, setIsGuestUser }) => {
   const incrementSet = () => {
     if (currentSet < numSets) {
       setCurrentSet((prev) => prev + 1)
-      if (currentSet == numSets - 1) {
+      setTotalCompletedSets(prev => prev + 1);
+      if (currentSet === numSets - 1) {
         setTimeout(() => {
-          setCurrentSet(0)
-          setCurrentRep(0)
+          setCurrentSet(numSets)
+          setCurrentRep(numReps)
         }, 1000)
       }
     }
@@ -206,21 +266,15 @@ export const WorkoutScreen = ({ setIsAuthorized, setIsGuestUser }) => {
     setRepsCompletion(0)
     setCurrentRep(0)
     setCurrentSet(0)
+    setTotalCompletedReps(0)
+    setTotalCompletedSets(0)
   }
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen)
   }
 
-  const [sliderState, setSliderState] = useState({
-    weight: 150,
-    sliderPosition: (50 / 300) * 300
-  })
 
-  const [heightState, setheightState] = useState({
-    height: 5,
-    heightPosition: (50 / 10) * 10
-  })
 
   const weightRef = useRef(50) // Initialize with default value
 
@@ -234,6 +288,16 @@ export const WorkoutScreen = ({ setIsAuthorized, setIsGuestUser }) => {
       document.addEventListener('touchend', handleTouchEnd)
     }
   }
+
+  const handleDropset = () => {
+    const newWeight = Math.max(0, sliderState.weight - decrementFactor);
+    setSliderState({
+      weight: newWeight,
+      sliderPosition: (newWeight / 300) * 100
+    });
+    weightRef.current = newWeight;
+    sendWeightData(newWeight);
+  };
 
   const handleMove = (clientY) => {
     const slider = document.querySelector('.weight-slider')
@@ -351,6 +415,30 @@ export const WorkoutScreen = ({ setIsAuthorized, setIsGuestUser }) => {
     const touch = e.touches[0]
     updateHorizontalPosition(touch.clientX)
   }
+
+  const handleApply = () => {
+    setStartTime(Date.now());
+  }
+
+  const handleCompleteWorkout = () => {
+    const endTime = Date.now();
+    let duration = 0;
+    if(startTime) {
+      duration = Math.floor((endTime - startTime) / 1000);
+    }
+    
+    
+    navigate('/workout-summary', {
+      state: {
+        timeTaken: duration,
+        totalSets: totalCompletedSets,
+        totalReps: totalCompletedReps,
+        workoutType: workoutMode,
+        maxWeight: maxWeight,
+        averageWeight: Math.round(totalWeight / weightCount)
+      }
+    });
+  };
 
   const updateHorizontalPosition = (clientX) => {
     const slider = document.querySelector('.horizontal-weight-slider')
@@ -546,6 +634,7 @@ export const WorkoutScreen = ({ setIsAuthorized, setIsGuestUser }) => {
               </div>
             </div>
 
+
             <button className="configure-button" onClick={handleConfigureClick}>
               CONFIGURE
             </button>
@@ -557,6 +646,14 @@ export const WorkoutScreen = ({ setIsAuthorized, setIsGuestUser }) => {
             <button onClick={resetCompletion} className="reset-button">
               RESET
             </button>
+            <button className="complete-workout-button" onClick={handleCompleteWorkout}>
+              Complete Workout
+            </button>
+            {isDropsetMode && (
+              <button onClick={handleDropset} className="dropset-button">
+                DROPSET
+              </button>
+            )}
           </div>
         </div>
 
@@ -653,6 +750,7 @@ export const WorkoutScreen = ({ setIsAuthorized, setIsGuestUser }) => {
               sendWeightData(newWeight)
               setWorkoutMode('Standard')
               closeConfig()
+              handleApply()
             }}
           />
         )}
@@ -660,17 +758,19 @@ export const WorkoutScreen = ({ setIsAuthorized, setIsGuestUser }) => {
         {workoutType === 'Dropset' && (
           <DropsetConfig
             onApply={(newSets, newReps, newBeginningWeight, newEndWeight) => {
-              setNumSets(newSets)
-              setNumReps(newReps)
+              setNumSets(newSets);
+              setNumReps(newReps);
               setSliderState({
                 weight: newBeginningWeight,
                 sliderPosition: (newBeginningWeight / 300) * 100
-              })
-              setEndWeight(newEndWeight)
-              weightRef.current = newBeginningWeight
-              sendWeightData(newBeginningWeight)
-              setWorkoutMode('Dropset')
-              closeConfig()
+              });
+              setEndWeight(newEndWeight);
+              weightRef.current = newBeginningWeight;
+              sendWeightData(newBeginningWeight);
+              setWorkoutMode('Dropset');
+              setIsDropsetMode(true);
+              setDecrementFactor(newEndWeight);
+              closeConfig();
             }}
           />
         )}
