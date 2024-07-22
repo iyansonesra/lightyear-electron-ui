@@ -5,10 +5,12 @@ interface SerialPortApi {
   writeToPort: (path: string, dataToWrite: string) => Promise<void>;
   listenForAngle: (path: string, callback: (angle: number) => void) => void;
 }
-  
+
+
   declare global {
     interface Window {
       serialport: SerialPortApi;
+      // api: ElectronAPI;
     }
   }
   

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './../styles/Login.css';
 import logo from '../assets/lightyear-logo.png';
 import { IoIosArrowForward } from 'react-icons/io';
@@ -8,6 +8,8 @@ import { db } from '../firebaseConfig';
 import { useUser } from './UserContext';
 import { FaBackspace } from "react-icons/fa";
 import { MdOutlineClear } from "react-icons/md";
+import axios from 'axios'
+import { getAuth, signInWithCustomToken } from 'firebase/auth';
 
 
 
@@ -56,6 +58,30 @@ interface User {
   PIN: string;
 }
 
+async function checkServerStatus() {
+  try {
+    // We're using invalid data here, so we expect a 401 or 400 response
+    const response = await axios.post('https://lyauthserver-jfekb4jwga-uc.a.run.app/generate-token', {
+      apiKey: 'invalid',
+      pin: '00000000'
+    });
+
+    // If we get here, the server is up but something unexpected happened
+    console.log('Server is up, but returned an unexpected response');
+    return true;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      // If we get a 401 or 400, the server is up and working as expected
+      if (error.response && (error.response.status === 401 || error.response.status === 400)) {
+        console.log('Server is up and running');
+        return true;
+      }
+    }
+    console.error('Error checking server status:', error);
+    return false;
+  }
+}
+
 export const Login: React.FC<{
   setIsAuthorized: (value: boolean) => void,
   setIsGuestUser: (value: boolean) => void
@@ -65,7 +91,16 @@ export const Login: React.FC<{
   const { setUserInfo } = useUser();
   const [rawPin, setRawPin] = useState<string>('');
   const [isKeypadVisible, setIsKeypadVisible] = useState(false);
+  const [isServerUp, setIsServerUp] = useState<boolean | null>(null);
   const [isKeypadMounted, setIsKeypadMounted] = useState(false);
+
+  useEffect(() => {
+    const checkServer = async () => {
+      const status = await checkServerStatus();
+      setIsServerUp(status);
+    };
+    checkServer();
+  }, []);
 
   const toggleKeypad = () => {
     if (isKeypadVisible) {
@@ -86,29 +121,72 @@ export const Login: React.FC<{
   const findUserByPin = async () => {
     setIsLoading(true);
     setError(null);
-
+  
     try {
-      const usersRef = collection(db, 'users');
-      const q = query(usersRef, where('PIN', '==', rawPin));
-      const querySnapshot = await getDocs(q);
-
-      if (querySnapshot.empty) {
-        setError('No user found with this PIN');
+      const serverUrl = 'https://lyauthserver-jfekb4jwga-uc.a.run.app/generate-token';
+      const apiKey = '94060511-ed70-4390-8068-29ff2f892dbc';
+  
+      console.log('Sending request with PIN:', rawPin);
+      const response = await axios.post(serverUrl, {
+        apiKey,
+        pin: rawPin
+      });
+  
+      console.log('Server response:', response.data);
+  
+      if (response.data && response.data.token) {
+        const auth = getAuth();
+        try {
+          await signInWithCustomToken(auth, response.data.token);
+          console.log('Successfully signed in with custom token');
+  
+          const usersRef = collection(db, 'users');
+          const q = query(usersRef, where("PIN", "==", rawPin));
+          const querySnapshot = await getDocs(q);
+          
+          if (!querySnapshot.empty) {
+            const userDoc = querySnapshot.docs[0];
+            const userData = userDoc.data();
+            setIsAuthorized(true);
+            setUserInfo(userData.firstName, userData.lastName);
+            console.log(`Logged in as ${userData.firstName} ${userData.lastName}`);
+          } else {
+            throw new Error('User not found in the database.');
+          }
+        } catch (signInError) {
+          console.error('Detailed sign-in error:', signInError);
+          if (signInError instanceof Error) {
+            setError(`Error signing in: ${signInError.message}`);
+            console.error('Error name:', signInError.name);
+            console.error('Error stack:', signInError.stack);
+          } else {
+            setError('Unknown error during sign-in');
+          }
+        }
       } else {
-        const userDoc = querySnapshot.docs[0];
-        const userData = userDoc.data() as User;
-        setUserInfo(userData.firstName, userData.lastName);
-        setIsAuthorized(true); // Set the user as authorized
+        throw new Error('Invalid response from server');
       }
     } catch (err) {
-      setError('Failed to fetch user data');
-      console.error('Error fetching user data:', err);
+      console.error('Full error object:', err);
+      if (axios.isAxiosError(err)) {
+        if (err.response) {
+          console.error('Error response:', err.response.data);
+          setError(`Server error: ${err.response.data.error || 'Unknown error'}`);
+        } else if (err.request) {
+          setError('No response received from server. Please try again.');
+        } else {
+          setError(`Error setting up request: ${err.message}`);
+        }
+      } else if (err instanceof Error) {
+        setError(err.message);
+      } else {
+        setError('An unexpected error occurred. Please try again.');
+      }
     } finally {
       setIsLoading(false);
     }
   };
-
-   const handleKeyPress = (key: string) => {
+  const handleKeyPress = (key: string) => {
     if (rawPin.length < 8) {
       setRawPin(prev => prev + key);
     }
@@ -149,20 +227,24 @@ export const Login: React.FC<{
         />
         {isKeypadMounted && (
           <div className={`keypad-container ${isKeypadVisible ? 'visible' : 'hidden'}`}>
-            <NumericKeypad 
+            <NumericKeypad
               onKeyPress={handleKeyPress}
               onDelete={handleDelete}
               onClear={handleClear}
             />
           </div>
         )}
-        <button className="loginButton" onClick={findUserByPin} disabled={isLoading || rawPin.length !== 8}>
-          {isLoading ? 'Searching...' : 'Log In'}
+        <button
+          className="loginButton"
+          onClick={findUserByPin}
+          disabled={isLoading || rawPin.length !== 8}
+        >
+          {isLoading ? 'Logging in...' : 'Log In'}
         </button>
         {error && <p className='errorText'>{error}</p>}
         <div className='signup'>
           <p className='accountText'>Don't have an account?</p>
-          <Link className='signUpText' to='/SignUp'>Sign Up</Link>
+          <Link className='signUpText' to='/SignUp'>Download the app</Link>
         </div>
       </div>
     </div>

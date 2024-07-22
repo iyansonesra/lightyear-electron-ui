@@ -1,11 +1,30 @@
-import { contextBridge } from 'electron'
+const { contextBridge, ipcRenderer } = require('electron');
 import { electronAPI } from '@electron-toolkit/preload'
 import { SerialPort, ReadlineParser } from 'serialport';
+const axios = require('axios');
+const { GoogleAuth } = require('google-auth-library');
+const path = require('path');
 
 // Custom APIs for renderer
 const api = {}
 
 console.log('resetting port');
+
+// const auth = new GoogleAuth({
+//   keyFile: path.join(__dirname, '../../ly-machine-auth-ec69815bb255.json'),
+//   scopes: ['https://www.googleapis.com/auth/cloud-platform'],
+// });
+
+// async function getCustomToken (apiKey) {
+//   const client = await auth.getClient();
+//   const url = 'https://token-server-jfekb4jwga-uc.a.run.app/getCustomToken';
+//   const res = await client.request({
+//     url,
+//     method: 'POST',
+//     data: { apiKey },
+//   });
+//   return res.data.token;
+// }
 
 // Use `contextBridge` APIs to expose Electron APIs to
 // renderer only if context isolation is enabled, otherwise
@@ -14,6 +33,11 @@ if (process.contextIsolated) {
   try {
     contextBridge.exposeInMainWorld('electron', electronAPI)
     contextBridge.exposeInMainWorld('api', api)
+
+    // contextBridge.exposeInMainWorld('api', {
+    //   getCustomToken: (apiKey) => ipcRenderer.invoke('get-custom-token', apiKey),
+    //   testServerAccess: () => ipcRenderer.invoke('test-server-access')
+    // });
     
     const openPorts = {};
     const angleListeners = {};
