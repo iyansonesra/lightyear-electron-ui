@@ -51,6 +51,7 @@ export const WorkoutScreen = ({ setIsAuthorized, setIsGuestUser }) => {
   const [isDropsetMode, setIsDropsetMode] = useState(false);
   const [decrementFactor, setDecrementFactor] = useState(0);
   // const [beginningWeight, setBeginningWeight] = useState(50);
+  const [isCleanScreenActive, setIsCleanScreenActive] = useState(false);
 
   // const [initialWeight, setInitialWeight] = useState(50);
   const [workoutMode, setWorkoutMode] = useState('Standard')
@@ -60,10 +61,15 @@ export const WorkoutScreen = ({ setIsAuthorized, setIsGuestUser }) => {
   const [angle, setAngle] = useState(0)
   const [isAscending, setIsAscending] = useState(true)
   const [hasReachedUpperThreshold, setHasReachedUpperThreshold] = useState(false)
-  const BOTTOM_THRESHOLD = 10 // Set this to your desired value
-  const UPPER_THRESHOLD = 80 // Set this to your desired value
+  const BOTTOM_THRESHOLD = 20 // Set this to your desired value
+  const UPPER_THRESHOLD = 75 // Set this to your desired value
   const [ballPosition, setBallPosition] = useState(710)
   const [isHeightSliderVisible, setIsHeightSliderVisible] = useState(false);
+  const [currentTargetWeight, setCurrentTargetWeight] = useState(concentricWeight);
+  const lastSignificantAngle = useRef(0);
+  const animationFrameId = useRef(null);
+  const ANGLE_THRESHOLD = 10; // Minimum angle change to trigger an update
+  const LERP_FACTOR = 0.07;
 
   const [workoutType, setWorkoutType] = useState('Standard')
 
@@ -82,26 +88,29 @@ export const WorkoutScreen = ({ setIsAuthorized, setIsGuestUser }) => {
   useEffect(() => {
     window.serialport.listenForAngle('COM15', (newAngle) => {
       setAngle((prevAngle) => {
-        const clampedAngle = Math.max(0, Math.min(80, newAngle))
-        setIsAscending(clampedAngle > prevAngle)
-        updateBallPosition(clampedAngle)
-        return clampedAngle
-      })
-    })
-  }, [])
+        const clampedAngle = Math.max(0, Math.min(100, newAngle));
+        setIsAscending(clampedAngle > prevAngle);
 
-  useEffect(() => {
-    if (currentSet === numSets && currentRep === numReps) {
-      setTimeout(() => {
-        handleCompleteWorkout();
-      }, 4000);
-    }
-  }, [currentSet, currentRep, numSets, numReps]);
+        // Only update if the angle change is significant
+        if (Math.abs(clampedAngle - lastSignificantAngle.current) >= ANGLE_THRESHOLD) {
+          lastSignificantAngle.current = clampedAngle;
+          updateBallPosition(clampedAngle);
+        }
 
+        return clampedAngle;
+      });
+    });
+
+    return () => {
+      if (animationFrameId.current) {
+        cancelAnimationFrame(animationFrameId.current);
+      }
+    };
+  }, []);
   useEffect(() => {
-    console.log(
-      `Angle: ${angle}, Ascending: ${isAscending}, Upper Threshold Reached: ${hasReachedUpperThreshold}`
-    )
+    // console.log(
+    //   `Angle: ${angle}, Ascending: ${isAscending}, Upper Threshold Reached: ${hasReachedUpperThreshold}`
+    // )
   }, [angle, isAscending, hasReachedUpperThreshold])
 
   const ballStyle = {
@@ -111,29 +120,39 @@ export const WorkoutScreen = ({ setIsAuthorized, setIsGuestUser }) => {
     borderRadius: '50%',
     position: 'absolute',
     top: `${ballPosition}px`,
-    transition: 'top 0.1s ease-out' // Add smooth transition
-  }
+    // Remove the transition property to allow for smoother animation
+  };
 
   const updateBallPosition = (angle) => {
-    const lineHeight = 710 // Height of the line in pixels
-    const position = (angle / 80) * lineHeight
-    setBallPosition(lineHeight - position) // Invert the position
-  }
+    const lineHeight = 710; // Height of the line in pixels
+    const minAngle = 20;
+    const maxAngle = 80;
 
-  const gradualWeightChange = (startWeight, endWeight, duration = 500) => {
-    const steps = 10
-    const stepDuration = duration / steps
-    const weightDifference = endWeight - startWeight
-    const weightStep = weightDifference / steps
+    // Normalize the angle to the range 0-1
+    const normalizedAngle = (angle - minAngle) / (maxAngle - minAngle);
 
-    for (let i = 1; i <= steps; i++) {
-      setTimeout(() => {
-        const currentWeight = Math.round(startWeight + weightStep * i)
-        sendWeightData(currentWeight)
-        updateSlider(currentWeight)
-      }, stepDuration * i)
+    // Calculate the target position, ensuring it stays within the container
+    const targetPosition = lineHeight - Math.max(0, Math.min(1, normalizedAngle)) * lineHeight;
+
+    const animateBallPosition = () => {
+      setBallPosition((currentPosition) => {
+        const newPosition = currentPosition + (targetPosition - currentPosition) * LERP_FACTOR;
+
+        if (Math.abs(newPosition - targetPosition) < 0.1) {
+          return targetPosition;
+        }
+
+        animationFrameId.current = requestAnimationFrame(animateBallPosition);
+        return newPosition;
+      });
+    };
+
+    if (animationFrameId.current) {
+      cancelAnimationFrame(animationFrameId.current);
     }
-  }
+    animationFrameId.current = requestAnimationFrame(animateBallPosition);
+  };
+
 
   const updateSlider = (weight) => {
     setSliderState({
@@ -167,24 +186,34 @@ export const WorkoutScreen = ({ setIsAuthorized, setIsGuestUser }) => {
 
   useEffect(() => {
     if (workoutMode === 'LoadingEccentric') {
-      if (isAscending && angle >= BOTTOM_THRESHOLD) {
-        sendWeightData(concentricWeight)
-        updateSlider(concentricWeight)
-      } else if (!isAscending && angle <= UPPER_THRESHOLD) {
-        gradualWeightChange(concentricWeight, eccentricWeight)
+      if (!hasReachedUpperThreshold) {
+
+      } else if (hasReachedUpperThreshold) {
+
+        // gradualWeightChange(concentricWeight, eccentricWeight)
       }
     }
 
     if (isAscending && angle >= UPPER_THRESHOLD) {
       setHasReachedUpperThreshold(true)
+      if (workoutMode === 'LoadingEccentric') {
+        sendWeightData(eccentricWeight)
+        updateSlider(eccentricWeight)
+      }
+
     } else if (!isAscending && hasReachedUpperThreshold && angle <= BOTTOM_THRESHOLD) {
       incrementRep()
-      setHasReachedUpperThreshold(false)
       if (workoutMode === 'LoadingEccentric') {
-        gradualWeightChange(eccentricWeight, concentricWeight)
+        sendWeightData(concentricWeight)
+        updateSlider(concentricWeight)
       }
+      setHasReachedUpperThreshold(false)
+      // if (workoutMode === 'LoadingEccentric') {
+      //   gradualWeightChange(eccentricWeight, concentricWeight)
+      // }
     }
   }, [angle, isAscending, workoutMode])
+
   const incrementRep = () => {
     if (
       workoutMode === 'cool' ||
@@ -460,6 +489,40 @@ export const WorkoutScreen = ({ setIsAuthorized, setIsGuestUser }) => {
     }
   }
 
+  const CleanScreenOverlay = ({ onClose }) => {
+    const [pressing, setPressing] = useState(false);
+    const pressTimer = useRef(null);
+  
+    const startPressing = () => {
+      setPressing(true);
+      pressTimer.current = setTimeout(() => {
+        onClose();
+      }, 2000);
+    };
+  
+    const stopPressing = () => {
+      setPressing(false);
+      if (pressTimer.current) {
+        clearTimeout(pressTimer.current);
+      }
+    };
+  
+    return (
+      <div className="clean-screen-overlay">
+        <button 
+          className="clean-screen-close" 
+          onMouseDown={startPressing}
+          onMouseUp={stopPressing}
+          onMouseLeave={stopPressing}
+          onTouchStart={startPressing}
+          onTouchEnd={stopPressing}
+        >
+          <h1>{pressing ? "Keep holding to exit..." : "Hold to exit Clean Screen Mode"}</h1>
+        </button>
+      </div>
+    );
+  };
+
   const endHorizontalSlide = () => {
     document.removeEventListener('mousemove', updateHorizontalSlider)
     document.removeEventListener('touchmove', updateHorizontalSliderTouch)
@@ -550,11 +613,16 @@ export const WorkoutScreen = ({ setIsAuthorized, setIsGuestUser }) => {
             {firstName} {lastName}
           </h1>
         </div>
+
+        <div className="menuItem" onClick={() => setIsCleanScreenActive(true)}>
+          <h1 className="menu-text">Clean Screen Mode</h1>
+        </div>
         <div className="logoutArea" onClick={handleLogout}>
           <h1 className="logout-text">LOGOUT</h1>
           <IoLogOutOutline size={35} className="logout-icon" />
         </div>
       </div>
+
 
       <div className="workout-container">
         <div className="currWorkout">
@@ -798,6 +866,9 @@ export const WorkoutScreen = ({ setIsAuthorized, setIsGuestUser }) => {
           />
         )}
       </div>
+      {isCleanScreenActive && (
+        <CleanScreenOverlay onClose={() => setIsCleanScreenActive(false)} />
+      )}
     </div>
   )
 }
