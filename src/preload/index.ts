@@ -51,7 +51,7 @@ if (process.contextIsolated) {
           port.pipe(parser);
     
           parser.on('data', (line) => {
-            console.log(line);
+            // console.log(line);
             if (angleListeners[path]) {
               const angle = parseFloat(line);
               if (!isNaN(angle)) {
