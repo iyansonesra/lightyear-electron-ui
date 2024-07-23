@@ -157,11 +157,7 @@ export const DropsetConfig = ({ onApply }) => {
         <div className="dropset container">
             <div className="workout-config dropset">
                 <div className='dropset beginweight'>
-<<<<<<< HEAD
                     <h1 className="dropset weight-text">Initial Weight</h1>
-=======
-                    <h1 className="dropset weight-text">Beginning Weight</h1>
->>>>>>> 117e1d6b38cd5c8e6745f6c983dc763c17613e43
                     <div
                         className="beginning-weight-slider"
                         onMouseDown={startBeginningWeightSlide}
@@ -177,11 +173,7 @@ export const DropsetConfig = ({ onApply }) => {
                 </div>
 
                 <div className='dropset endweight'>
-<<<<<<< HEAD
                     <h1 className="dropset weight-text">Decrement Factor</h1>
-=======
-                    <h1 className="dropset weight-text">End Weight</h1>
->>>>>>> 117e1d6b38cd5c8e6745f6c983dc763c17613e43
                     <div
                         className="end-weight-slider"
                         onMouseDown={startEndWeightSlide}
@@ -196,11 +188,7 @@ export const DropsetConfig = ({ onApply }) => {
                     <h1 className="dropset pounds-text">{endWeightState.weight} lbs</h1>
                 </div>
 
-<<<<<<< HEAD
-                {/* <div className="dropset SetsAndReps">
-=======
                 <div className="dropset SetsAndReps">
->>>>>>> 117e1d6b38cd5c8e6745f6c983dc763c17613e43
                     <div className='dropset sets'>
                         <h1 className="dropset sets-text">Sets</h1>
                         <div className="incrementor">
@@ -217,11 +205,7 @@ export const DropsetConfig = ({ onApply }) => {
                             <button onClick={incrementReps}>+</button>
                         </div>
                     </div>
-<<<<<<< HEAD
-                </div> */}
-=======
                 </div>
->>>>>>> 117e1d6b38cd5c8e6745f6c983dc763c17613e43
             </div>
             <button className="config-close-button" onClick={() => {
                 onApply(sets, reps, beginningWeightState.weight, endWeightState.weight);

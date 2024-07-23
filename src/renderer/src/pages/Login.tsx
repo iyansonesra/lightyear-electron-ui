@@ -102,8 +102,6 @@ export const Login: React.FC<{
     checkServer();
   }, []);
 
-  const [isKeypadMounted, setIsKeypadMounted] = useState(false);
-
   const toggleKeypad = () => {
     if (isKeypadVisible) {
       setIsKeypadVisible(false);
@@ -209,27 +207,6 @@ export const Login: React.FC<{
     setUserInfo('Guest', 'User');
   };
 
-   const handleKeyPress = (key: string) => {
-    if (rawPin.length < 8) {
-      setRawPin(prev => prev + key);
-    }
-  };
-
-  const handleDelete = () => {
-    setRawPin(prev => prev.slice(0, -1));
-  };
-
-  const handleClear = () => {
-    setRawPin('');
-  };
-
-
-  const handleGuestLogin = () => {
-    setIsGuestUser(true);
-    setIsAuthorized(true);
-    setUserInfo('Guest', 'User');
-  };
-
   return (
     <div className='root'>
       <div className='guestLogin' onClick={handleGuestLogin}>
@@ -250,7 +227,7 @@ export const Login: React.FC<{
         />
         {isKeypadMounted && (
           <div className={`keypad-container ${isKeypadVisible ? 'visible' : 'hidden'}`}>
-            <NumericKeypad 
+            <NumericKeypad
               onKeyPress={handleKeyPress}
               onDelete={handleDelete}
               onClear={handleClear}
