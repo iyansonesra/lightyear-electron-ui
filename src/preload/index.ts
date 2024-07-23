@@ -33,7 +33,6 @@ if (process.contextIsolated) {
   try {
     contextBridge.exposeInMainWorld('electron', electronAPI)
     contextBridge.exposeInMainWorld('api', api)
-
     // contextBridge.exposeInMainWorld('api', {
     //   getCustomToken: (apiKey) => ipcRenderer.invoke('get-custom-token', apiKey),
     //   testServerAccess: () => ipcRenderer.invoke('test-server-access')

@@ -6,11 +6,11 @@ interface SerialPortApi {
   listenForAngle: (path: string, callback: (angle: number) => void) => void;
 }
 
-
   declare global {
     interface Window {
       serialport: SerialPortApi;
       // api: ElectronAPI;
+
     }
   }
   

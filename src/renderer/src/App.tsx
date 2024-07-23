@@ -72,6 +72,7 @@ function AppContent(): JSX.Element {
 
   // testServerAccess();
 
+
   useEffect(() => {
     setIsLoading(true);
     const timer = setTimeout(() => {
@@ -98,35 +99,27 @@ function AppContent(): JSX.Element {
 
   return (
     <>
-      <UserProvider>
-        {isLoading && <LoadingScreen />}
-        <Routes>
-          <Route 
-            path="/" 
-            element={
-              (isAuthorized || isGuestUser)
-                ? <Navigate to="/workout" replace /> 
-                : <Login setIsAuthorized={setIsAuthorized} setIsGuestUser={setIsGuestUser}/>
-            } 
-          />
-          <Route 
-            path="/workout" 
-            element={
-              (isAuthorized || isGuestUser)
-                ? <WorkoutScreen setIsAuthorized={setIsAuthorized} setIsGuestUser={setIsGuestUser} /> 
-                : <Navigate to="/" replace />
-            } 
-          />
-          <Route 
-            path="/workout-summary" 
-            element={
-              (isAuthorized || isGuestUser)
-                ? <WorkoutSummary /> 
-                : <Navigate to="/" replace />
-            } 
-          />
-          <Route path="*" element={<Navigate to="/" replace />} />
-        </Routes>
+    <UserProvider>
+      {isLoading && <LoadingScreen />}
+      <Routes>
+        <Route 
+          path="/" 
+          element={
+            (isAuthorized || isGuestUser)
+              ? <Navigate to="/workout" replace /> 
+              : <Login setIsAuthorized={setIsAuthorized} setIsGuestUser={setIsGuestUser}/>
+          } 
+        />
+        <Route 
+          path="/workout" 
+          element={
+            (isAuthorized || isGuestUser)
+              ? <WorkoutScreen setIsAuthorized={setIsAuthorized} setIsGuestUser={setIsGuestUser} /> 
+              : <Navigate to="/" replace />
+          } 
+        />
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Routes>
       </UserProvider>
     </>
   );

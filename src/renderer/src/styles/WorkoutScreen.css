@@ -548,6 +548,9 @@ body {
     background-image: url('../assets/hex-background.png');
     background-size: 250% 250%;
     background-position: center;
+    background-image: url('../assets/hex-background.png');
+    background-size: 250% 250%;
+    background-position: center;
     border: none;
     outline: none;
     flex-direction: column;
@@ -983,6 +986,22 @@ body {
     width: 900px;
     height: 50%;
     margin-top: 10px;
+    background-color: transparent;
+    border: 1px solid black;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    cursor: pointer;
+    position: relative;
+    border-image: linear-gradient(to left, #000, #fff) 20;
+    border-width: 1px;
+    border-style: solid;
+}
+
+.weight-slider {
+    width: 50%;
+    height: 740px;
+    margin-top: 30px;
     background-color: transparent;
     border: 1px solid black;
     display: flex;
