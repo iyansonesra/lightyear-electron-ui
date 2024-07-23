@@ -2,20 +2,21 @@
 import { initializeApp } from "firebase/app";
 import { getAuth } from 'firebase/auth';
 import { getFirestore } from 'firebase/firestore';
+// import firebase from 'firebase/compat/app';
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-  apiKey: "AIzaSyBcQxp6cQJlEDpXRKH4552YTeOt2RTkZEM",
-  authDomain: "lightyear-app-login.firebaseapp.com",
-  projectId: "lightyear-app-login",
-  storageBucket: "lightyear-app-login.appspot.com",
-  messagingSenderId: "319238927043",
-  appId: "1:319238927043:web:4e775bf078486843e5a876",
-  measurementId: "G-GN3X0164YV"
+  apiKey: "AIzaSyBYiAKeBJOHE5SOsRoNsGd7yCawX4ElnJ4",
+  authDomain: "ly-machine-auth.firebaseapp.com",
+  projectId: "ly-machine-auth",
+  storageBucket: "ly-machine-auth.appspot.com",
+  messagingSenderId: "166289128145",
+  appId: "1:166289128145:web:176ada9176c0c9c76f63f0",
+  measurementId: "G-N63B7ZY43B"
 };
-// Initialize Firebase
+
 const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
 export const db = getFirestore(app);

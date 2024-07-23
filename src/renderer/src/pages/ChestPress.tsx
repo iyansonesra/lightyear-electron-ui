@@ -11,11 +11,6 @@ import { RxPerson } from 'react-icons/rx'
 import { LoadingEccentricConfig } from '../components/LoadingEccentricConfig'
 import { DropsetConfig } from '../components/DropsetConfig'
 import { StandardConfig } from '../components/StandardConfig'
-import Game from '../components/Game'; // Adjust the import path accordingly
-
-
-
-
 
 window.serialport
   .openPort('COM15', 57600)
@@ -26,17 +21,7 @@ window.serialport
     console.error('Error:', error)
   })
 
-export const WorkoutScreen = ({ setIsAuthorized, setIsGuestUser }) => {
-
-
-  const [startTime, setStartTime] = useState<number | null>(0);
-  const [totalTime, setTotalTime] = useState(0);
-  const [maxWeight, setMaxWeight] = useState(0);
-  const [totalWeight, setTotalWeight] = useState(0);
-  const [weightCount, setWeightCount] = useState(0);
-  const [totalCompletedReps, setTotalCompletedReps] = useState(0);
-  const [totalCompletedSets, setTotalCompletedSets] = useState(0);
-
+export const ChestPress = ({ setIsAuthorized, setIsGuestUser }) => {
   const CIRCLE_LENGTH1 = 500
   const R1 = CIRCLE_LENGTH1 / (2 * Math.PI)
   const CIRCLE_LENGTH2 = 550
@@ -46,15 +31,11 @@ export const WorkoutScreen = ({ setIsAuthorized, setIsGuestUser }) => {
   const { firstName, lastName } = useUser()
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [isConfigOpen, setIsConfigOpen] = useState(false)
-  const [isGameOpen, setIsGameOpen] = useState(false)
   const [numSets, setNumSets] = useState(4)
   const [numReps, setNumReps] = useState(8)
   const [currentRep, setCurrentRep] = useState(0)
   const [currentSet, setCurrentSet] = useState(0)
-  const [isDropsetMode, setIsDropsetMode] = useState(false);
-  const [decrementFactor, setDecrementFactor] = useState(0);
   // const [beginningWeight, setBeginningWeight] = useState(50);
-  const [isCleanScreenActive, setIsCleanScreenActive] = useState(false);
 
   // const [initialWeight, setInitialWeight] = useState(50);
   const [workoutMode, setWorkoutMode] = useState('Standard')
@@ -64,56 +45,27 @@ export const WorkoutScreen = ({ setIsAuthorized, setIsGuestUser }) => {
   const [angle, setAngle] = useState(0)
   const [isAscending, setIsAscending] = useState(true)
   const [hasReachedUpperThreshold, setHasReachedUpperThreshold] = useState(false)
-  const BOTTOM_THRESHOLD = 20 // Set this to your desired value
-  const UPPER_THRESHOLD = 75 // Set this to your desired value
+  const BOTTOM_THRESHOLD = 10 // Set this to your desired value
+  const UPPER_THRESHOLD = 80 // Set this to your desired value
   const [ballPosition, setBallPosition] = useState(710)
   const [isHeightSliderVisible, setIsHeightSliderVisible] = useState(false);
-  const [currentTargetWeight, setCurrentTargetWeight] = useState(concentricWeight);
-  const lastSignificantAngle = useRef(0);
-  const animationFrameId = useRef(null);
-  const ANGLE_THRESHOLD = 10; // Minimum angle change to trigger an update
-  const LERP_FACTOR = 0.07;
 
   const [workoutType, setWorkoutType] = useState('Standard')
-
-  const [sliderState, setSliderState] = useState({
-    weight: 0,
-    sliderPosition: (50 / 300) * 300
-  })
-
-  const [heightState, setheightState] = useState({
-    height: 5,
-    heightPosition: (50 / 10) * 10
-  })
-
-
 
   useEffect(() => {
     window.serialport.listenForAngle('COM15', (newAngle) => {
       setAngle((prevAngle) => {
-        const clampedAngle = Math.max(0, Math.min(100, newAngle));
-        setIsAscending(clampedAngle > prevAngle);
-
-        // Only update if the angle change is significant
-        if (Math.abs(clampedAngle - lastSignificantAngle.current) >= ANGLE_THRESHOLD) {
-          lastSignificantAngle.current = clampedAngle;
-          updateBallPosition(clampedAngle);
-        }
-
-        return clampedAngle;
-      });
-    });
-
-    return () => {
-      if (animationFrameId.current) {
-        cancelAnimationFrame(animationFrameId.current);
-      }
-    };
-  }, []);
+        const clampedAngle = Math.max(0, Math.min(80, newAngle))
+        setIsAscending(clampedAngle > prevAngle)
+        updateBallPosition(clampedAngle)
+        return clampedAngle
+      })
+    })
+  }, [])
   useEffect(() => {
-    // console.log(
-    //   `Angle: ${angle}, Ascending: ${isAscending}, Upper Threshold Reached: ${hasReachedUpperThreshold}`
-    // )
+    console.log(
+      `Angle: ${angle}, Ascending: ${isAscending}, Upper Threshold Reached: ${hasReachedUpperThreshold}`
+    )
   }, [angle, isAscending, hasReachedUpperThreshold])
 
   const ballStyle = {
@@ -123,39 +75,29 @@ export const WorkoutScreen = ({ setIsAuthorized, setIsGuestUser }) => {
     borderRadius: '50%',
     position: 'absolute',
     top: `${ballPosition}px`,
-    // Remove the transition property to allow for smoother animation
-  };
+    transition: 'top 0.1s ease-out' // Add smooth transition
+  }
 
   const updateBallPosition = (angle) => {
-    const lineHeight = 710; // Height of the line in pixels
-    const minAngle = 20;
-    const maxAngle = 80;
+    const lineHeight = 710 // Height of the line in pixels
+    const position = (angle / 80) * lineHeight
+    setBallPosition(lineHeight - position) // Invert the position
+  }
 
-    // Normalize the angle to the range 0-1
-    const normalizedAngle = (angle - minAngle) / (maxAngle - minAngle);
+  const gradualWeightChange = (startWeight, endWeight, duration = 500) => {
+    const steps = 10
+    const stepDuration = duration / steps
+    const weightDifference = endWeight - startWeight
+    const weightStep = weightDifference / steps
 
-    // Calculate the target position, ensuring it stays within the container
-    const targetPosition = lineHeight - Math.max(0, Math.min(1, normalizedAngle)) * lineHeight;
-
-    const animateBallPosition = () => {
-      setBallPosition((currentPosition) => {
-        const newPosition = currentPosition + (targetPosition - currentPosition) * LERP_FACTOR;
-
-        if (Math.abs(newPosition - targetPosition) < 0.1) {
-          return targetPosition;
-        }
-
-        animationFrameId.current = requestAnimationFrame(animateBallPosition);
-        return newPosition;
-      });
-    };
-
-    if (animationFrameId.current) {
-      cancelAnimationFrame(animationFrameId.current);
+    for (let i = 1; i <= steps; i++) {
+      setTimeout(() => {
+        const currentWeight = Math.round(startWeight + weightStep * i)
+        sendWeightData(currentWeight)
+        updateSlider(currentWeight)
+      }, stepDuration * i)
     }
-    animationFrameId.current = requestAnimationFrame(animateBallPosition);
-  };
-
+  }
 
   const updateSlider = (weight) => {
     setSliderState({
@@ -165,58 +107,25 @@ export const WorkoutScreen = ({ setIsAuthorized, setIsGuestUser }) => {
   }
 
   useEffect(() => {
-    if (startTime) {
-      const timer = setInterval(() => {
-        setTotalTime(Math.floor((Date.now() - startTime) / 1000));
-      }, 1000);
-      return () => clearInterval(timer);
-    }
-  }, [startTime]);
-
-  useEffect(() => {
-    if (currentSet === numSets && currentRep === numReps) {
-      handleCompleteWorkout();
-    }
-  }, [currentSet, currentRep, numSets, numReps]);
-
-  useEffect(() => {
-    if (sliderState.weight > maxWeight) {
-      setMaxWeight(sliderState.weight);
-    }
-    setTotalWeight(prevTotal => prevTotal + sliderState.weight);
-    setWeightCount(prevCount => prevCount + 1);
-  }, [sliderState.weight]);
-
-  useEffect(() => {
     if (workoutMode === 'LoadingEccentric') {
-      if (!hasReachedUpperThreshold) {
-
-      } else if (hasReachedUpperThreshold) {
-
-        // gradualWeightChange(concentricWeight, eccentricWeight)
+      if (isAscending && angle >= BOTTOM_THRESHOLD) {
+        sendWeightData(concentricWeight)
+        updateSlider(concentricWeight)
+      } else if (!isAscending && angle <= UPPER_THRESHOLD) {
+        gradualWeightChange(concentricWeight, eccentricWeight)
       }
     }
 
     if (isAscending && angle >= UPPER_THRESHOLD) {
       setHasReachedUpperThreshold(true)
-      if (workoutMode === 'LoadingEccentric') {
-        sendWeightData(eccentricWeight)
-        updateSlider(eccentricWeight)
-      }
-
     } else if (!isAscending && hasReachedUpperThreshold && angle <= BOTTOM_THRESHOLD) {
       incrementRep()
-      if (workoutMode === 'LoadingEccentric') {
-        sendWeightData(concentricWeight)
-        updateSlider(concentricWeight)
-      }
       setHasReachedUpperThreshold(false)
-      // if (workoutMode === 'LoadingEccentric') {
-      //   gradualWeightChange(eccentricWeight, concentricWeight)
-      // }
+      if (workoutMode === 'LoadingEccentric') {
+        gradualWeightChange(eccentricWeight, concentricWeight)
+      }
     }
   }, [angle, isAscending, workoutMode])
-
   const incrementRep = () => {
     if (
       workoutMode === 'cool' ||
@@ -231,8 +140,6 @@ export const WorkoutScreen = ({ setIsAuthorized, setIsGuestUser }) => {
       sendWeightData(concentricWeight)
       updateSlider(concentricWeight)
     }
-
-    setTotalCompletedReps(prev => prev + 1);
 
     if (currentRep < numReps) {
       setCurrentRep((prev) => prev + 1)
@@ -252,11 +159,10 @@ export const WorkoutScreen = ({ setIsAuthorized, setIsGuestUser }) => {
   const incrementSet = () => {
     if (currentSet < numSets) {
       setCurrentSet((prev) => prev + 1)
-      setTotalCompletedSets(prev => prev + 1);
-      if (currentSet === numSets - 1) {
+      if (currentSet == numSets - 1) {
         setTimeout(() => {
-          setCurrentSet(numSets)
-          setCurrentRep(numReps)
+          setCurrentSet(0)
+          setCurrentRep(0)
         }, 1000)
       }
     }
@@ -272,15 +178,6 @@ export const WorkoutScreen = ({ setIsAuthorized, setIsGuestUser }) => {
 
   const closeConfig = () => {
     setIsConfigOpen(false)
-  }
-
-  const handleGameClick = (e) => {
-    e.stopPropagation()
-    setIsGameOpen(true)
-  }
-
-  const closeGame = () => {
-    setIsGameOpen(false)
   }
 
   const handleLogout = () => {
@@ -309,15 +206,21 @@ export const WorkoutScreen = ({ setIsAuthorized, setIsGuestUser }) => {
     setRepsCompletion(0)
     setCurrentRep(0)
     setCurrentSet(0)
-    setTotalCompletedReps(0)
-    setTotalCompletedSets(0)
   }
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen)
   }
 
+  const [sliderState, setSliderState] = useState({
+    weight: 150,
+    sliderPosition: (50 / 300) * 300
+  })
 
+  const [heightState, setheightState] = useState({
+    height: 5,
+    heightPosition: (50 / 10) * 10
+  })
 
   const weightRef = useRef(50) // Initialize with default value
 
@@ -331,16 +234,6 @@ export const WorkoutScreen = ({ setIsAuthorized, setIsGuestUser }) => {
       document.addEventListener('touchend', handleTouchEnd)
     }
   }
-
-  const handleDropset = () => {
-    const newWeight = Math.max(0, sliderState.weight - decrementFactor);
-    setSliderState({
-      weight: newWeight,
-      sliderPosition: (newWeight / 300) * 100
-    });
-    weightRef.current = newWeight;
-    sendWeightData(newWeight);
-  };
 
   const handleMove = (clientY) => {
     const slider = document.querySelector('.weight-slider')
@@ -459,30 +352,6 @@ export const WorkoutScreen = ({ setIsAuthorized, setIsGuestUser }) => {
     updateHorizontalPosition(touch.clientX)
   }
 
-  const handleApply = () => {
-    setStartTime(Date.now());
-  }
-
-  const handleCompleteWorkout = () => {
-    const endTime = Date.now();
-    let duration = 0;
-    if(startTime) {
-      duration = Math.floor((endTime - startTime) / 1000);
-    }
-    
-    
-    navigate('/workout-summary', {
-      state: {
-        timeTaken: duration,
-        totalSets: totalCompletedSets,
-        totalReps: totalCompletedReps,
-        workoutType: workoutMode,
-        maxWeight: maxWeight,
-        averageWeight: Math.round(totalWeight / weightCount)
-      }
-    });
-  };
-
   const updateHorizontalPosition = (clientX) => {
     const slider = document.querySelector('.horizontal-weight-slider')
     if (slider) {
@@ -500,40 +369,6 @@ export const WorkoutScreen = ({ setIsAuthorized, setIsGuestUser }) => {
       console.error('Horizontal slider element not found.')
     }
   }
-
-  const CleanScreenOverlay = ({ onClose }) => {
-    const [pressing, setPressing] = useState(false);
-    const pressTimer = useRef(null);
-  
-    const startPressing = () => {
-      setPressing(true);
-      pressTimer.current = setTimeout(() => {
-        onClose();
-      }, 2000);
-    };
-  
-    const stopPressing = () => {
-      setPressing(false);
-      if (pressTimer.current) {
-        clearTimeout(pressTimer.current);
-      }
-    };
-  
-    return (
-      <div className="clean-screen-overlay">
-        <button 
-          className="clean-screen-close" 
-          onMouseDown={startPressing}
-          onMouseUp={stopPressing}
-          onMouseLeave={stopPressing}
-          onTouchStart={startPressing}
-          onTouchEnd={stopPressing}
-        >
-          <h1>{pressing ? "Keep holding to exit..." : "Hold to exit Clean Screen Mode"}</h1>
-        </button>
-      </div>
-    );
-  };
 
   const endHorizontalSlide = () => {
     document.removeEventListener('mousemove', updateHorizontalSlider)
@@ -607,7 +442,7 @@ export const WorkoutScreen = ({ setIsAuthorized, setIsGuestUser }) => {
     <div className="root">
       <div className="header">
         <IoMenuOutline size={40} className="menu-icon" onClick={toggleMenu} />
-        <h1 className="header-text">PREACHER CURL</h1>
+        <h1 className="header-text">CHEST PRESS</h1>
         <div className="right-header">
           <DateTime></DateTime>
           <IoSettingsOutline size={35} className="settings-icon" />
@@ -625,16 +460,11 @@ export const WorkoutScreen = ({ setIsAuthorized, setIsGuestUser }) => {
             {firstName} {lastName}
           </h1>
         </div>
-
-        <div className="menuItem" onClick={() => setIsCleanScreenActive(true)}>
-          <h1 className="menu-text">Clean Screen Mode</h1>
-        </div>
         <div className="logoutArea" onClick={handleLogout}>
           <h1 className="logout-text">LOGOUT</h1>
           <IoLogOutOutline size={35} className="logout-icon" />
         </div>
       </div>
-
 
       <div className="workout-container">
         <div className="currWorkout">
@@ -716,13 +546,8 @@ export const WorkoutScreen = ({ setIsAuthorized, setIsGuestUser }) => {
               </div>
             </div>
 
-
             <button className="configure-button" onClick={handleConfigureClick}>
               CONFIGURE
-            </button>
-
-            <button className="game-button" onClick={handleGameClick}>
-              GAME
             </button>
 
             {/* <button onClick={incrementCompletion} className="increment-button">Increment Completion</button> */}
@@ -732,15 +557,6 @@ export const WorkoutScreen = ({ setIsAuthorized, setIsGuestUser }) => {
             <button onClick={resetCompletion} className="reset-button">
               RESET
             </button>
-            <button className="complete-workout-button" onClick={handleCompleteWorkout}>
-              Complete Workout
-            </button>
-            
-            {isDropsetMode && (
-              <button onClick={handleDropset} className="dropset-button">
-                DROPSET
-              </button>
-            )}
           </div>
         </div>
 
@@ -824,12 +640,6 @@ export const WorkoutScreen = ({ setIsAuthorized, setIsGuestUser }) => {
           <div className="selector"></div>
         </div>
 
-      <div className={`overlay ${isGameOpen ? 'active' : ''}`} onClick={closeGame}></div>
-      <div className={`game-screen ${isGameOpen ? 'open' : ''}`}>
-        <h1 className="header-text">GAME</h1>
-        <Game />
-      </div>
-
         {workoutType === 'Standard' && (
           <StandardConfig
             onApply={(newSets: number, newReps: number, newWeight: number) => {
@@ -843,7 +653,6 @@ export const WorkoutScreen = ({ setIsAuthorized, setIsGuestUser }) => {
               sendWeightData(newWeight)
               setWorkoutMode('Standard')
               closeConfig()
-              handleApply()
             }}
           />
         )}
@@ -851,19 +660,17 @@ export const WorkoutScreen = ({ setIsAuthorized, setIsGuestUser }) => {
         {workoutType === 'Dropset' && (
           <DropsetConfig
             onApply={(newSets, newReps, newBeginningWeight, newEndWeight) => {
-              setNumSets(newSets);
-              setNumReps(newReps);
+              setNumSets(newSets)
+              setNumReps(newReps)
               setSliderState({
                 weight: newBeginningWeight,
                 sliderPosition: (newBeginningWeight / 300) * 100
-              });
-              setEndWeight(newEndWeight);
-              weightRef.current = newBeginningWeight;
-              sendWeightData(newBeginningWeight);
-              setWorkoutMode('Dropset');
-              setIsDropsetMode(true);
-              setDecrementFactor(newEndWeight);
-              closeConfig();
+              })
+              setEndWeight(newEndWeight)
+              weightRef.current = newBeginningWeight
+              sendWeightData(newBeginningWeight)
+              setWorkoutMode('Dropset')
+              closeConfig()
             }}
           />
         )}
@@ -889,9 +696,6 @@ export const WorkoutScreen = ({ setIsAuthorized, setIsGuestUser }) => {
           />
         )}
       </div>
-      {isCleanScreenActive && (
-        <CleanScreenOverlay onClose={() => setIsCleanScreenActive(false)} />
-      )}
     </div>
   )
 }
