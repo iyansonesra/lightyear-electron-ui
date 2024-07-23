@@ -5,121 +5,119 @@ import '../styles/Game.css'; // Import the CSS file for styling
 const Game: React.FC = () => {
   useEffect(() => {
     console.log("Initializing Kaboom...");
-    // Initialize kaboom context
-    kaboom({
-      global: false, // Prevent kaboom from polluting the global namespace
-      width: 640, // Set the width of the game canvas
-      height: 480, // Set the height of the game canvas
+
+    const k = kaboom({
+      global: false,
+      width: 640,
+      height: 480,
       canvas: document.getElementById('gameCanvas') as HTMLCanvasElement,
-      background: [0, 0, 0], // Background color
+      background: [0, 0, 0],
     });
 
     console.log("Kaboom initialized. Loading assets...");
 
-    // Load assets
-    loadSprite("bird", "sprites/bird.png");
-    loadSprite("bg", "sprites/bg.png");
-    loadSprite("pipe", "sprites/pipe.png");
-    loadSound("jump", "sounds/jump.mp3");
-    loadSound("bruh", "sounds/bruh.mp3");
-    loadSound("pass", "sounds/pass.mp3");
+    k.loadSprite("bird", "/sprites/bird.png");
+    k.loadSprite("bg", "/sprites/bg.png");
+    k.loadSprite("pipe", "/sprites/pipe.png");
+    k.loadSound("jump", "/sounds/jump.mp3");
+    k.loadSound("bruh", "/sounds/bruh.mp3");
+    k.loadSound("pass", "/sounds/pass.mp3");
 
     console.log("Assets loaded.");
 
     let highScore = 0;
 
-    // Game scene
-    scene("game", () => {
+    k.scene("game", () => {
+      console.log("Starting game scene...");
+
       const PIPE_GAP = 140;
       let score = 0;
-      setGravity(1600);
+      k.setGravity(1600);
 
-      add([sprite("bg", { width: width(), height: height() })]);
+      k.add([k.sprite("bg", { width: k.width(), height: k.height() })]);
 
-      const scoreText = add([text(score), pos(12, 12)]);
+      const scoreText = k.add([k.text(score), k.pos(12, 12)]);
 
-      const player = add([sprite("bird"), scale(1.2), pos(100, 50), area(), body()]);
+      const player = k.add([k.sprite("bird"), k.scale(1.2), k.pos(100, 50), k.area(), k.body()]);
 
       function createPipes() {
-        const offset = rand(-50, 50);
-        // bottom pipe
-        add([
-          sprite("pipe"),
-          pos(width(), height() / 2 + offset + PIPE_GAP / 2),
+        const offset = k.rand(-50, 50);
+        k.add([
+          k.sprite("pipe"),
+          k.pos(k.width(), k.height() / 2 + offset + PIPE_GAP / 2),
           "pipe",
-          scale(2),
-          area(),
+          k.scale(2),
+          k.area(),
           { passed: false },
         ]);
 
-        // top pipe
-        add([
-          sprite("pipe", { flipY: true }),
-          pos(width(), height() / 2 + offset - PIPE_GAP / 2),
+        k.add([
+          k.sprite("pipe", { flipY: true }),
+          k.pos(k.width(), k.height() / 2 + offset - PIPE_GAP / 2),
           "pipe",
-          anchor("botleft"),
-          scale(2),
-          area(),
+          k.anchor("botleft"),
+          k.scale(2),
+          k.area(),
         ]);
       }
 
-      loop(1.5, () => createPipes());
+      k.loop(1.5, () => createPipes());
 
-      onUpdate("pipe", (pipe) => {
+      k.onUpdate("pipe", (pipe) => {
         pipe.move(-300, 0);
 
         if (pipe.passed === false && pipe.pos.x < player.pos.x) {
           pipe.passed = true;
           score += 1;
           scoreText.text = score;
-          play("pass");
+          k.play("pass");
         }
       });
 
       player.onCollide("pipe", () => {
-        const ss = screenshot();
-        go("gameover", score, ss);
+        const ss = k.screenshot();
+        k.go("gameover", score, ss);
       });
 
       player.onUpdate(() => {
-        if (player.pos.y > height()) {
-          const ss = screenshot();
-          go("gameover", score, ss);
+        if (player.pos.y > k.height()) {
+          const ss = k.screenshot();
+          k.go("gameover", score, ss);
         }
       });
 
-      onKeyPress("space", () => {
-        play("jump");
+      k.onKeyPress("space", () => {
+        k.play("jump");
         player.jump(400);
       });
-      // For touch
+
       window.addEventListener("touchstart", () => {
-        play("jump");
+        k.play("jump");
         player.jump(400);
       });
     });
 
-    // Game over scene
-    scene("gameover", (score, screenshot) => {
+    k.scene("gameover", (score, screenshot) => {
       if (score > highScore) highScore = score;
 
-      play("bruh");
+      k.play("bruh");
 
-      loadSprite("gameOverScreen", screenshot);
-      add([sprite("gameOverScreen", { width: width(), height: height() })]);
+      k.loadSprite("gameOverScreen", screenshot);
+      k.add([k.sprite("gameOverScreen", { width: k.width(), height: k.height() })]);
 
-      add([
-        text("gameover!\n" + "score: " + score + "\nhigh score: " + highScore, { size: 45 }),
-        pos(width() / 2, height() / 3),
+      k.add([
+        k.text("gameover!\n" + "score: " + score + "\nhigh score: " + highScore, { size: 45 }),
+        k.pos(k.width() / 2, k.height() / 3),
       ]);
 
-      onKeyPress("space", () => {
-        go("game");
+      k.onKeyPress("space", () => {
+        k.go("game");
       });
     });
 
-    // Start the game
-    go("game");
+    k.go("game");
+
+    console.log("Game started.");
   }, []);
 
   return (
